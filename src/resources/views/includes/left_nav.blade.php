@@ -1,0 +1,57 @@
+<nav class="side-nav">
+    <a href="" class="intro-x flex items-center pl-5 pt-4">
+        <img alt="" class="w-6" src="">
+        <span class="hidden xl:block text-white text-lg ml-3"> <span class="font-medium"></span> </span>
+    </a>
+    <div class="side-nav__devider my-6"></div>
+    <ul>
+        <li>
+            <a href="{{url('/')}}" class="side-menu  @if(Request::is('/')) side-menu--active @endif">
+                <div class="side-menu__icon"> <i data-feather="home"></i> </div>
+                <div class="side-menu__title"> Dashboard </div>
+            </a>
+        </li>
+
+
+        <li>
+            <a href="javascript:;" class="side-menu @if(Request::is('institute/*')) side-menu--active @endif">
+                <div class="side-menu__icon"> <i data-feather="inbox"></i> </div>
+                <div class="side-menu__title">Institute Details Setup<i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a href="{{route('institute.index')}}" class="side-menu @if(Request::routeIs('institute.index')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
+                        <div class="side-menu__title"> Add Institute Details</div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('institute.index')}}" class="side-menu @if(Request::routeIs('institute.index')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
+                        <div class="side-menu__title"> Edit Institute Details</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="side-nav__devider my-6"></li>
+
+            <li>
+                <a href="javascript:;" class="side-menu">
+                    <div class="side-menu__icon"> <i data-feather="inbox"></i> </div>
+                    <div class="side-menu__title"> User  Management <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                </a>
+                <ul class="">
+                    <li>
+                        <a href="#" class="side-menu">
+                            <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
+                            <div class="side-menu__title"> Add Users <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+
+    </ul>
+</nav>
