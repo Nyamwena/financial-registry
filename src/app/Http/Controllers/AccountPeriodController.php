@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Institute;
+use App\Models\AccountPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class InstituteController extends Controller
+class AccountPeriodController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class InstituteController extends Controller
      */
     public function index()
     {
-        return view('institute.index');
+        return view("accounting_periods.add");
     }
 
     /**
@@ -38,15 +38,15 @@ class InstituteController extends Controller
     {
         try {
 
-          //  dd($request);
+            //  dd($request);
             DB::beginTransaction();
-            Institute::create($request->except(['_token']));
+            AccountPeriod::create($request->except(['_token']));
             DB::commit();
             return redirect()->back()->with('toast_success','Saved Successfully');
         }catch (\Exception $exception){
             DB::rollback();
             dd($exception->getMessage());
-           // return redirect()->back()->with('toast_error',  $exception->getMessage());
+            // return redirect()->back()->with('toast_error',  $exception->getMessage());
         }
     }
 

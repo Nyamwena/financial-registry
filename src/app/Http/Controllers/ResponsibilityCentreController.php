@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Institute;
+
+use App\Models\Responsibility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class InstituteController extends Controller
+class ResponsibilityCentreController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,7 @@ class InstituteController extends Controller
      */
     public function index()
     {
-        return view('institute.index');
+        return view('responsibility_centre.add');
     }
 
     /**
@@ -38,15 +39,15 @@ class InstituteController extends Controller
     {
         try {
 
-          //  dd($request);
+            //  dd($request);
             DB::beginTransaction();
-            Institute::create($request->except(['_token']));
+            Responsibility::create($request->except(['_token']));
             DB::commit();
             return redirect()->back()->with('toast_success','Saved Successfully');
         }catch (\Exception $exception){
             DB::rollback();
             dd($exception->getMessage());
-           // return redirect()->back()->with('toast_error',  $exception->getMessage());
+            // return redirect()->back()->with('toast_error',  $exception->getMessage());
         }
     }
 
