@@ -2,104 +2,88 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
-use Illuminate\Http\Request;
-
-class AccountPeriodController extends Controller
-{
-    //
-=======
 use App\Models\AccountPeriod;
+use App\Models\AccountPeriodDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AccountPeriodController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+
+    public function  index()
     {
-        return view("accounting_periods.add");
+        $account_period = AccountPeriod::all();
+        return view('account_period.add', compact('account_period'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    //save account period
+    public function create(Request $request)
     {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
+        $this->validate($request,[
+            'fl_date_a' =>'required|date|after:yesterday',
+            'fl_date_z'=>'required|date|after:fl_date_a',
+            'fl_period_code' => 'unique:tbl_period_hdr'
+        ]);
         try {
 
-            //  dd($request);
             DB::beginTransaction();
-            AccountPeriod::create($request->except(['_token']));
+           $account_period = AccountPeriod::create($request->except(['_token']));
+//            if ($account_period){
+//                AccountPeriodDetail::create($request->except(['_token']));
+//            }
             DB::commit();
-            return redirect()->back()->with('toast_success','Saved Successfully');
-        }catch (\Exception $exception){
-            DB::rollback();
-            dd($exception->getMessage());
-            // return redirect()->back()->with('toast_error',  $exception->getMessage());
+            return redirect()->back()->with('success', 'Account Period Saved Successfully');
+
+        } catch (\Exception $exception){
+            DB::rollBack();
+            return redirect()->back()->with('error', $exception->getMessage());
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function create_period_detail(Request $request): \Illuminate\Http\RedirectResponse
     {
-        //
+        $this->validate($request,[
+            'fl_dtl_date_a' =>'required|date|after:yesterday',
+            'fl_dtl_date_z'=>'required|date|after:fl_dtl_date_a',
+        ]);
+
+        try {
+            DB::beginTransaction();
+            $period_detail = AccountPeriodDetail::create($request->except(['_token']));
+            if($period_detail){
+                DB::commit();
+                return redirect()->back()->with('success', 'Account Period Detail Saved Successfully');
+            }
+
+        } catch (\Exception $exception){
+            DB::rollBack();
+            return redirect()->back()->with('info', $exception->getMessage());
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function open_close_account_period(Request $request): \Illuminate\Http\RedirectResponse
     {
-        //
+        $period_code_fl = $request->input('fl_period_code');
+        $open_close = $request->input('open_close');
+        try {
+            $check_open = AccountPeriod::all()->where('fl_closed','=',1)->count();
+          // dd($check_open);
+
+            if($open_close == 1){
+                $period_header = AccountPeriod::where(['fl_period_code' => $period_code_fl]);
+                $period_header->update($request->except(['_token','period_code_fl']));
+                return redirect()->back()->with('success', 'Record Processed Successfully');
+            } else {
+                $period_header = AccountPeriod::where(['fl_period_code' => $period_code_fl]);
+                $period_header->update($request->except(['_token','period_code_fl']));
+                return redirect()->back()->with('success', 'Record Processed Successfully');
+            }
+        }catch (\Exception $exception){
+            return redirect()->back()->with('info', $exception->getMessage());
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
->>>>>>> ede640f11ca6a095fe25b37245cba5ee882ce3ae
 }
