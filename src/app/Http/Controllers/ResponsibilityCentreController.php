@@ -2,18 +2,12 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
-use Illuminate\Http\Request;
 
-class AccountPeriodController extends Controller
-{
-    //
-=======
-use App\Models\AccountPeriod;
+use App\Models\Responsibility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class AccountPeriodController extends Controller
+class ResponsibilityCentreController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +16,7 @@ class AccountPeriodController extends Controller
      */
     public function index()
     {
-        return view("accounting_periods.add");
+        return view('responsibility_centre.add');
     }
 
     /**
@@ -47,7 +41,7 @@ class AccountPeriodController extends Controller
 
             //  dd($request);
             DB::beginTransaction();
-            AccountPeriod::create($request->except(['_token']));
+            Responsibility::create($request->except(['_token']));
             DB::commit();
             return redirect()->back()->with('toast_success','Saved Successfully');
         }catch (\Exception $exception){
@@ -101,5 +95,4 @@ class AccountPeriodController extends Controller
     {
         //
     }
->>>>>>> ede640f11ca6a095fe25b37245cba5ee882ce3ae
 }

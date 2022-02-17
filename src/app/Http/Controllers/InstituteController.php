@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Institute;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InstituteController extends Controller
 {
@@ -34,7 +36,18 @@ class InstituteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+
+          //  dd($request);
+            DB::beginTransaction();
+            Institute::create($request->except(['_token']));
+            DB::commit();
+            return redirect()->back()->with('toast_success','Saved Successfully');
+        }catch (\Exception $exception){
+            DB::rollback();
+            dd($exception->getMessage());
+           // return redirect()->back()->with('toast_error',  $exception->getMessage());
+        }
     }
 
     /**
