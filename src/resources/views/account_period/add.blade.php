@@ -213,7 +213,7 @@
 
                         </div>
 
-                        <input type="text" class="input w-full border flex-1" id="period_code_fl" name="fl_period_code">
+                        <input type="hidden" class="input w-full border flex-1" id="period_code_fl" name="fl_period_code">
                     </div>
                     <div class="px-5 py-3 text-right border-t border-gray-200">
                         <button type="button" data-dismiss="modal" class="button w-24 border text-gray-700 mr-1">Cancel</button>

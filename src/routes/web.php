@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountPeriodController;
+use App\Http\Controllers\AccountTypesController;
 use App\Http\Controllers\InstituteController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,13 +23,19 @@ Route::prefix('institute')->name('institute.')->group(function (){
 });
 
 
-Route::prefix('account-period')->name('account-period.')->group(function (){
-    Route::get('/', [AccountPeriodController::class,'index'])->name('index');
-    Route::post('/create/account/period',[AccountPeriodController::class,'create'])->name('create');
-    Route::get('/view/account/period', [AccountPeriodController::class,'show'])->name('show');
-    Route::post('/create/detail', [AccountPeriodController::class,'create_period_detail'])->name('detail-create');
-    Route::post('/close-open/period/{period_code}', [AccountPeriodController::class,'open_close_account_period'])->name('close-open');
+Route::prefix('account')->name('account-period.')->group(function (){
+    Route::get('/account-period', [AccountPeriodController::class,'index'])->name('index');
+    Route::post('/account-period/create/account/period',[AccountPeriodController::class,'create'])->name('create');
+    Route::get('/account-period/view/account/period', [AccountPeriodController::class,'show'])->name('show');
+    Route::post('/account-period/create/detail', [AccountPeriodController::class,'create_period_detail'])->name('detail-create');
+    Route::post('/account-period/close-open/period/', [AccountPeriodController::class,'open_close_account_period'])->name('close-open');
 
+});
+
+//account type
+Route::prefix('account')->name('account-type.')->group(function (){
+    Route::get('/account-type', [AccountTypesController::class,'index'])->name('index');
+    Route::post('/account-type/store', [AccountTypesController::class,'store'])->name('store');
 });
 
 
