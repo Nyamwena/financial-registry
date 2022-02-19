@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AccountTypes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class AccountTypesController extends Controller
 {
@@ -32,21 +33,51 @@ class AccountTypesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'fl_account_type_name' => 'required|min:3',
+            'fl_account_range_a' => 'required_with:fl_account_range_z',
+            'fl_account_range_z' => 'required_with:fl_account_range_a|integer|gt:fl_account_range_a'
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+        }
+
+        $range_a = $request->input('fl_account_range_a');
+        $range_z = $request->input('fl_account_range_z');
+
+      //  dd($range_a . '' . $range_z);
+
         try {
 
             //  dd($request);
+
             DB::beginTransaction();
+            $check_range = AccountTypes::get();
+                //->pluck('fl_account_range_a');
+            //$check_range_z = AccountTypes::all()->pluck('fl_account_range_z');
+
+          // dd($check_range);
+            foreach ($check_range as $range){
+                // 3000 >= db_value  && 7000 <= db_value ------->this check for range
+
+                if($range_a >= $range->fl_account_range_a && $range_a <= $range->fl_account_range_z ) {
+                   // dump($range->fl_account_range_a . '_' . $range->fl_account_range_z);
+                    return redirect()->back()->with('toast_error','The range is all ready been defined!!');
+                }
+
+            }
             AccountTypes::create($request->except(['_token']));
             DB::commit();
-            return redirect()->back()->with('toast_success','Saved Successfully');
+            return redirect()->back()->with('success','Saved Successfully');
         }catch (\Exception $exception){
             DB::rollback();
-            dd($exception->getMessage());
-            // return redirect()->back()->with('toast_error',  $exception->getMessage());
+            //dd($exception->getMessage());
+            return redirect()->back()->with('toast_error',  $exception->getMessage());
         }
     }
 

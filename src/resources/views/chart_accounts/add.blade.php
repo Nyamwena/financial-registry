@@ -7,54 +7,83 @@
             <!-- BEGIN: Form Layout -->
 
             <div class="intro-y box p-8">
-                <form action="{{route('chart_accounts.store')}}" method="post">
+                <form action="{{route('chart.store')}}" method="post">
                     @csrf
                     <div class="">
                         <div class="grid grid-cols-12 gap-4 row-gap-5 mt-5">
 
-                            <div class="intro-y col-span-12 sm:col-span-3">
+                            <div class="intro-y col-span-12 sm:col-span-5">
                                 <div class="mb-2">Account Number</div>
                                 <input type="text" class="input w-full border flex-1" name="fl_account_num"  required>
-                                <span id="error_code"></span>
+                                @error('fl_account_num')
+                                <div class="mb-2 text-red-500"> {{$message}}</div>
+                                @enderror
 
                             </div>
 
-                            <div class="intro-y col-span-12 sm:col-span-3">
+                            <div class="intro-y col-span-12 sm:col-span-5">
                                 <div class="mb-2">Account Name</div>
                                 <input type="text" class="input w-full border flex-1" placeholder=" " name="fl_account_name"  required>
-                                <span id="error_code"></span>
+                                @error('fl_account_name')
+                                <div class="mb-2 text-red-500"> {{$message}}</div>
+                                @enderror
                             </div>
 
 
 
-                            <div class="intro-y col-span-12 sm:col-span-6">
+                            <div class="intro-y col-span-12 sm:col-span-2">
                                 <div class="mb-2">Account Main Type</div>
-                                <input type="number" class="input w-full border flex-1" placeholder=""  name="fl_account_main_type" required>
-                                <span id="error_code"></span>
+                                <select name="fl_account_main_type" data-placeholder="Select Account Type" class="select2 w-full" id="" required>
+                                    <option value="">----pick an option--- </option>
+                                    @foreach($account_type as $type)
+                                        <option value="{{$type->fl_acc_type_code}}">{{$type->fl_account_type_name}}</option>
+                                    @endforeach
+
+                                </select>
+                                @error('fl_account_main_type')
+                                <div class="mb-2 text-red-500"> {{$message}}</div>
+                                @enderror
 
                             </div>
 
                             <div class="intro-y col-span-12 sm:col-span-4">
                                 <div class="mb-2">Account Subtype-A</div>
-                                <input type="number" class="input w-full border flex-1" placeholder=""  name="fl_account_sub_type_a" required>
-                                <span id="error_code"></span>
+                                <select name="fl_account_sub_type_a" data-placeholder="Select Account Type" class="select2 w-full" id="" required>
+                                    <option value="">----pick an option--- </option>
+                                    @foreach($account_type as $type)
+                                        <option value="{{$type->fl_acc_type_code}}">{{$type->fl_account_type_name}}</option>
+                                    @endforeach
+                                </select>
+                                @error('fl_account_sub_type_a')
+                                <div class="mb-2 text-red-500"> {{$message}}</div>
+                                @enderror
 
                             </div>
 
                             <div class="intro-y col-span-12 sm:col-span-4">
                                 <div class="mb-2">Account Subtype-B</div>
-                                <input type="number" class="input w-full border flex-1" name="fl_account_sub_type_b"  required>
-                                <span id="error_code"></span>
+                                <select name="fl_account_sub_type_b" data-placeholder="Select Account Type" class="select2 w-full" id="" required>
+                                    <option value="">----pick an option--- </option>
+                                    @foreach($account_type as $type)
+                                        <option value="{{$type->fl_acc_type_code}}">{{$type->fl_account_type_name}}</option>
+                                    @endforeach
+                                </select>
+
+                                @error('fl_account_sub_type_b')
+                                <div class="mb-2 text-red-50"> {{$message}}</div>
+                                @enderror
 
                             </div>
 
                             <div class="intro-y col-span-12 sm:col-span-4">
-                                <div class="mb-2">Account Subtype Bank</div>
-                                <select name="fl_account_bank" class="input w-full border flex-1"  id="">
-                                    <option value="1">True</option>
-                                    <option value="0">False</option>
+                                <div class="mb-2">Is It Bank?</div>
+                                <select name="fl_account_bank" class="input w-full border flex-1"  id="" required>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
                                 </select>
-                                <span id="error_code"></span>
+                                @error('fl_account_bank')
+                                <div class="mb-2 text-red-50"> {{$message}}</div>
+                                @enderror
 
                             </div>
 
@@ -70,5 +99,6 @@
             <!-- END: Form Layout -->
         </div>
     </div>
+    @include('sweetalert::alert')
 @endsection
 

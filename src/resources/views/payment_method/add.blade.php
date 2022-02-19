@@ -7,13 +7,10 @@
             <!-- BEGIN: Form Layout -->
 
             <div class="intro-y box p-8">
-                <form action="{{route('payment_method.store')}}" method="post">
+                <form action="{{route('monetary-payment-method.store')}}" method="post">
                     @csrf
                     <div class="">
                         <div class="grid grid-cols-12 gap-4 row-gap-5 mt-5">
-
-
-
 
 
                             <div class="intro-y col-span-12 sm:col-span-3">

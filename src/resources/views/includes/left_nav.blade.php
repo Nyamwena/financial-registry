@@ -38,7 +38,7 @@
         <li class="side-nav__devider my-6"></li>
 
         <li>
-            <a href="javascript:;" class="side-menu @if(Request::is('accounts/*')) side-menu--active @endif">
+            <a href="javascript:;" class="side-menu @if(Request::is('account/*')) side-menu--active @endif">
                 <div class="side-menu__icon"> <i data-feather="inbox"></i> </div>
                 <div class="side-menu__title"> Accounts Settings <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
             </a>
@@ -59,7 +59,41 @@
                 </li>
 
                 <li>
-                    <a href="#" class="side-menu">
+                    <a href="{{route('chart.index')}}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
+                        <div class="side-menu__title"> Chart of Accounts <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+
+        <li class="side-nav__devider my-6"></li>
+
+
+        <li>
+            <a href="javascript:;" class="side-menu @if(Request::is('monetary/*')) side-menu--active @endif">
+                <div class="side-menu__icon"> <i data-feather="inbox"></i> </div>
+                <div class="side-menu__title"> Monetary Settings <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a href="{{route('monetary.currency-index')}}" class="side-menu @if(Request::routeIs('monetary.currency-index')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
+                        <div class="side-menu__title"> Currency Setup <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                    </a>
+                </li>
+
+
+                <li>
+                    <a href="{{route('account-type.index')}}" class="side-menu @if(Request::routeIs('account-type.index')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
+                        <div class="side-menu__title"> Account Type <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('chart.index')}}" class="side-menu">
                         <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
                         <div class="side-menu__title"> Chart of Accounts <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
                     </a>

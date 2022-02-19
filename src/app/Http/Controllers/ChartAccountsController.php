@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccountTypes;
 use App\Models\ChartAccounts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,11 +12,12 @@ class ChartAccountsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        return view('chart_accounts.add');
+        $account_type = AccountTypes::all();
+        return view('chart_accounts.add', compact('account_type'));
     }
 
     /**
@@ -32,22 +34,24 @@ class ChartAccountsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-
+        $this->validate($request,[
+            'fl_account_num' => 'unique:tbl_chart'
+        ]);
         try {
 
-            //  dd($request);
+
             DB::beginTransaction();
             ChartAccounts::create($request->except(['_token']));
             DB::commit();
             return redirect()->back()->with('toast_success','Saved Successfully');
         }catch (\Exception $exception){
             DB::rollback();
-            dd($exception->getMessage());
-            // return redirect()->back()->with('toast_error',  $exception->getMessage());
+
+            return redirect()->back()->with('toast_error',  $exception->getMessage());
         }
     }
 

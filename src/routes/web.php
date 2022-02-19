@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AccountPeriodController;
 use App\Http\Controllers\AccountTypesController;
+use App\Http\Controllers\ChartAccountsController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\InstituteController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,8 +41,20 @@ Route::prefix('account')->name('account-type.')->group(function (){
 });
 
 
+//chart of accounts
+Route::prefix('account')->name('chart.')->group(function (){
+    Route::get('/chart', [ChartAccountsController::class,'index'])->name('index');
+    Route::post('/chart/store', [ChartAccountsController::class,'store'])->name('store');
+});
 
 
+// currency exchange_rate payment_methods
+Route::prefix('monetary')->name('monetary.')->group(function (){
+    Route::get('/currency', [CurrencyController::class,'index'])->name('currency-index');
+    Route::post('/currency/store', [CurrencyController::class,'store'])->name('currency-store');
+
+
+    //
+});
 Auth::routes();
-
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

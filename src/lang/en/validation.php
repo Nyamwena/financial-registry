@@ -158,6 +158,13 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'fl_account_range_z' => 'account range end',
+        'fl_account_range_a' => 'account  range start',
+        'fl_account_type_name' => 'account type name',
+        'fl_account_num' => 'account number',
+        'fl_period_code' => 'account period code',
+
+    ],
 
 ];
