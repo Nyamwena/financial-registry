@@ -18,7 +18,7 @@
                                     <i data-feather="monitor" class="report-box__icon text-theme-10"></i>
                                 </div>
                                 <div class="text-3xl font-bold leading-8 mt-6"></div>
-                                <div class="text-base text-gray-600 mt-1">Debtors %</div>
+                                <div class="text-base text-gray-600 mt-1">Point of Sale</div>
                             </div>
                         </div>
                     </a>
@@ -77,7 +77,7 @@
                     <a href="" class="ml-auto text-theme-1 col-span-12 xl:col-span-6 mt-6" style="margin: 5px !important;" >
                         <div class="box px-4 py-4 mb-3 flex items-center zoom-in">
                             <div class="ml-4 mr-auto">
-                                <div class="font-medium">Add</div>
+                                <div class="font-medium">Point of Sale</div>
                             </div>
                         </div>
                     </a>

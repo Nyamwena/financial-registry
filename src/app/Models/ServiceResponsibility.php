@@ -10,4 +10,8 @@ class ServiceResponsibility extends Model
     use HasFactory;
 
     protected $table = 'tbl_responsible_service';
+
+    protected $fillable = [
+      'fl_centre_code', 'fl_service_code','fl_period_code'
+    ];
 }

@@ -20,7 +20,6 @@
                                 @enderror
 
                             </div>
-
                             <div class="intro-y col-span-12 sm:col-span-5">
                                 <div class="mb-2">Account Name</div>
                                 <input type="text" class="input w-full border flex-1" placeholder=" " name="fl_account_name"  required>
@@ -28,15 +27,12 @@
                                 <div class="mb-2 text-red-500"> {{$message}}</div>
                                 @enderror
                             </div>
-
-
-
                             <div class="intro-y col-span-12 sm:col-span-2">
                                 <div class="mb-2">Account Main Type</div>
                                 <select name="fl_account_main_type" data-placeholder="Select Account Type" class="select2 w-full" id="" required>
                                     <option value="">----pick an option--- </option>
-                                    @foreach($account_type as $type)
-                                        <option value="{{$type->fl_acc_type_code}}">{{$type->fl_account_type_name}}</option>
+                                    @foreach($account_main as $type)
+                                        <option value="{{$type->id}}">{{$type->fl_account_type}}</option>
                                     @endforeach
 
                                 </select>

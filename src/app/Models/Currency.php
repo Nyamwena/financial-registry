@@ -16,4 +16,8 @@ class Currency extends Model
         'fl_currency_symbol',
         'fl_active',
     ];
+
+    public function exchange_rate(){
+        return $this->hasMany(ExchangeRate::class, 'fl_currency_code','fl_currency_code');
+    }
 }

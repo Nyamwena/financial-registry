@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccountMainType;
 use App\Models\AccountTypes;
 use App\Models\ChartAccounts;
 use Illuminate\Http\Request;
@@ -17,7 +18,9 @@ class ChartAccountsController extends Controller
     public function index()
     {
         $account_type = AccountTypes::all();
-        return view('chart_accounts.add', compact('account_type'));
+
+        $account_main = AccountMainType::all();
+        return view('chart_accounts.add', compact('account_type', 'account_main'));
     }
 
     /**

@@ -9,4 +9,6 @@ class Services extends Model
 {
     use HasFactory;
     protected $table = 'tbl_service';
+
+    protected $fillable = ['fl_service_name','fl_account_num'];
 }

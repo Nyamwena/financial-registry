@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\AccountPeriod;
+use App\Models\ChartAccounts;
 use App\Models\Responsibility;
+use App\Models\ServiceResponsibility;
+use App\Models\Services;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,11 +16,19 @@ class ResponsibilityCentreController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        return view('responsibility_centre.add');
+
+       $centres = Responsibility::all();
+       $account_numbers= ChartAccounts::all();
+       $service_responsibility = ServiceResponsibility::all();
+       $period_code = AccountPeriod::all()->where('fl_closed' ,'=',0);
+       $service = Services::all();
+      //dd($period_code);
+        return view('responsibility_centre.add',
+            compact('centres','account_numbers','service_responsibility','period_code','service'));
     }
 
     /**
@@ -35,7 +47,7 @@ class ResponsibilityCentreController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function  create_centre(Request $request)
     {
         try {
 
@@ -46,8 +58,8 @@ class ResponsibilityCentreController extends Controller
             return redirect()->back()->with('toast_success','Saved Successfully');
         }catch (\Exception $exception){
             DB::rollback();
-            dd($exception->getMessage());
-            // return redirect()->back()->with('toast_error',  $exception->getMessage());
+            //dd($exception->getMessage());
+            return redirect()->back()->with('toast_error',  $exception->getMessage());
         }
     }
 

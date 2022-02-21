@@ -9,4 +9,19 @@ class ExchangeRate extends Model
 {
     use HasFactory;
     protected $table = 'tbl_exchange';
+    protected $fillable = [
+        'fl_bulletin_active',
+        'fl_effective_date',
+        'fl_currency_code',
+        'fl_currency_code_dest',
+        'fl_base_rate_amount',
+        'fl_dest_rate',
+    ];
+
+    public function currency(){
+        return $this->hasOne(Currency::class,'fl_currency_code','fl_currency_code');
+    }
+
+
+
 }

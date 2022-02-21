@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('institution_types', function (Blueprint $table) {
-            $table->id();
+        Schema::create('tbl_ordinance', function (Blueprint $table) {
+            $table->id('fl_ordinance_number');
+            $table->string('fl_desc', length: 50);
+            $table->date('fl_date_a');
+            $table->date('fl_date_z');
+            $table->boolean('fl_active');
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('institution_types');
+        Schema::dropIfExists('tbl_ordinance');
     }
 };
