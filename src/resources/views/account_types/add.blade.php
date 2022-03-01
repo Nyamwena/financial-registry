@@ -48,6 +48,80 @@
             </div>
             <!-- END: Form Layout -->
         </div>
+
+
     </div>
+    <div class="intro-y datatable-wrapper box p-5 mt-5">
+        <h1></h1>
+        <table id="data-source-1" class="table table-report table-report--bordered display datatable w-full">
+            <caption class="text-2xl text-green-600">Account Types</caption>
+            <thead>
+            <tr>
+                <th class="border-b-2 whitespace-no-wrap">Account Type code</th>
+                <th class="border-b-2 whitespace-no-wrap">Account Type name</th>
+                <th class="border-b-2 whitespace-no-wrap">Account range start</th>
+                <th class="border-b-2 whitespace-no-wrap">Account range end</th>
+                <th class="border-b-2  whitespace-no-wrap">ACTIONS</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            @foreach($account_types as $account_types)
+                <tr>
+
+                    <td class=" border-b">
+                        {{--                                {{$rate->fl_currency_code->fl_exchange_bulletino}}--}}
+                        {{$account_types->fl_acc_type_code}}
+
+                    </td>
+                    <td class=" border-b">
+                        {{--                                {{$rate->fl_currency_name}} <br>--}}
+                        {{--                                {{$rate->fl_currency_code->fl_base_rate_amount}}--}}
+                        {{$account_types->fl_account_type_name}}
+
+                    </td>
+                    <td class=" border-b">
+
+                        {{--                                {{$rate->fl_currency_name}} <br>--}}
+                        {{--                                {{$rate->fl_currency_code->fl_dest_rate}}--}}
+                        {{$account_types->fl_account_range_a}}
+                    </td>
+                    <td class=" border-b">
+
+                        {{--                                {{$rate->fl_currency_name}} <br>--}}
+                        {{--                                {{$rate->fl_currency_code->fl_dest_rate}}--}}
+                        {{$account_types->fl_account_range_z}}
+                    </td>
+
+                    {{--                        <td class=" border-b">--}}
+                    {{--                            @if($$account_types->fl_paymethod_active == 1)--}}
+                    {{--                                Yes--}}
+                    {{--                            @elseif($$account_types->fl_paymethod_active == 0)--}}
+                    {{--                                No--}}
+                    {{--                            @endif--}}
+
+                    {{--                        </td>--}}
+
+
+                    <td class="border-b w-5">
+                        <div class="flex sm:justify-center items-center">
+                            <a class="flex items-center mr-3 edit" href="#" data-toggle="modal"
+                               data-target="#edit_currency"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i>
+                                Edit
+                            </a>
+                            <br>
+                        </div>
+                    </td>
+
+                </tr>
+
+
+            @endforeach
+
+            </tbody>
+        </table>
+    </div>
+
+
     @include('sweetalert::alert')
 @endsection

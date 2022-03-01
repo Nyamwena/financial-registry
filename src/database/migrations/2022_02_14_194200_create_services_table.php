@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id('fl_service_code');
             $table->string('fl_service_name', length: 100);
             $table->string('fl_account_num',length: 20);
+            $table->string('fl_service_dest')->unique()->nullable();
             $table->timestamps();
             $table->foreign('fl_account_num')->references('fl_account_num')->on('tbl_chart')->onDelete('cascade');
         });

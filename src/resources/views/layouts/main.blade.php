@@ -73,7 +73,7 @@
         <!-- END: Top Bar -->
 
     @yield('content')
-
+    @include('sweetalert::alert')
     <!-- END: Content -->
     </div>
     <script src="{{asset('dist/js/app.js')}}"></script>

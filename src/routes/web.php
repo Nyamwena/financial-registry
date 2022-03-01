@@ -2,12 +2,18 @@
 
 use App\Http\Controllers\AccountPeriodController;
 use App\Http\Controllers\AccountTypesController;
+use App\Http\Controllers\AgeAnalysisController;
 use App\Http\Controllers\ChartAccountsController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangeRateController;
 use App\Http\Controllers\FeesGroupController;
+use App\Http\Controllers\FeesStatementController;
 use App\Http\Controllers\FeesStructureController;
+use App\Http\Controllers\ImportCustomerController;
 use App\Http\Controllers\InstituteController;
+use App\Http\Controllers\InventoryServiceController;
+use App\Http\Controllers\InvoiceBillingController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OrdinanceController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\PointOfSaleController;
@@ -29,7 +35,7 @@ use Illuminate\Support\Facades\Route;
 //->middleware(['auth'])
 Route::prefix('institute')->name('institute.')->group(function (){
     Route::get('/', [InstituteController::class,'index'])->name('index');
-
+    Route::post('/institute',[InstituteController::class,'store'])->name('store');
 });
 
 
@@ -119,8 +125,57 @@ Route::prefix('fees')->name('fees.')->group(function (){
 Route::prefix('point-of-sale')->name('pos.')->group(function (){
     Route::get('/', [PointOfSaleController::class,'index'])->name('index');
     Route::post('/fees/store', [PointOfSaleController::class,'create_fees_group'])->name('create');
+
+    Route::get('/search', [PointOfSaleController::class,'search_customer'])->name('live-search');
 });
 
+//CUSTOMER IMPORT
+Route::prefix('customer-import')->name('import.')->group(function (){
+    Route::get('/', [ImportCustomerController::class,'import'])->name('index');
+    Route::post('/upload',[ImportCustomerController::class,'upload_customers'])->name('upload');
+    Route::get('/u3-student-member', [ImportCustomerController::class,'student_member_import'])->name('student-member');
+    Route::post('/u3student-import/post',[ImportCustomerController::class,'import_students'])->name('student-member.post');
+});
+
+//customer billing
+Route::prefix('customer-billing')->name('invoice-billing.')->group(function (){
+    Route::get('/', [InvoiceBillingController::class,'create_billing'])->name('index');
+    Route::post('/fees_group', [InvoiceBillingController::class,'get_customers'])->name('get-customers');
+    Route::get('/bill-one',[InvoiceBillingController::class,'bill_one'])->name('bill-one');
+    Route::post('/fees_group/bulk/billing', [InvoiceBillingController::class,'bulk_billing'])->name('bulk-billing');
+
+});
+
+
+
+//fees statement
+Route::prefix('fees-statement')->name('fees-report.')->group(function (){
+    Route::get('/', [FeesStatementController::class,'index'])->name('index');
+    Route::get('/{account_number}', [FeesStatementController::class,'get_fees_statement'])->name('get-statement');
+});
+
+Route::prefix('age-analysis')->name('age-analysis.')->group(function (){
+    Route::get('/', [AgeAnalysisController::class,'index'])->name('index');
+});
+
+
+
+Route::prefix('invoice')->name('invoice.')->group(function (){
+    Route::get('/', [InvoiceController::class,'index'])->name('index');
+    Route::get('/process/{fl_invoice_number}', [InvoiceController::class,'process_invoice'])->name('process');
+
+    Route::post('/process/remittance', [InvoiceController::class,'post_process_invoice'])->name('remittance-post');
+    Route::get('/generate/receipt/{id}', [InvoiceController::class,'generate_receipt'])->name('generate-receipt');
+
+
+});
+
+Route::prefix('inventory-service')->name('inventory-service.')->group(function (){
+    Route::get('/', [InventoryServiceController::class,'index'])->name('index');
+    Route::post('/store', [InventoryServiceController::class,'create_products'])->name('create');
+
+
+});
 
 
 

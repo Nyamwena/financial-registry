@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AccountPeriod;
 use App\Models\AccountPeriodDetail;
+use App\Models\Institute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -16,6 +17,10 @@ class AccPeriodDetailController extends Controller
      */
     public function index(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
+        $check_institution = Institute::all()->first();
+        if (!$check_institution){
+            return  redirect()->to('/institute')->with('toast_error', 'Please add institution details first');
+        }
         return view('accounting_periods.add');
     }
 

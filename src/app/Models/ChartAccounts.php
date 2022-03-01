@@ -17,4 +17,18 @@ class ChartAccounts extends Model
         'fl_account_sub_type_b',
         'fl_account_bank',
     ];
+
+    public function account_type_main(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(AccountMainType::class,'fl_account_main_type','id');
+    }
+    public function account_type_a(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(AccountTypes::class,'fl_account_sub_type_a','fl_acc_type_code');
+    }
+
+    public function account_type_b(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(AccountTypes::class,'fl_account_sub_type_b','fl_acc_type_code');
+    }
 }

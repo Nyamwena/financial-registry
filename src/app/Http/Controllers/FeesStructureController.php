@@ -6,6 +6,7 @@ use App\Models\Currency;
 use App\Models\FeesGroup;
 use App\Models\FeesOrdinance;
 use App\Models\FeesStructure;
+use App\Models\Institute;
 use App\Models\Services;
 use App\Models\U1AcademicSession;
 use Illuminate\Http\Request;
@@ -22,6 +23,11 @@ class FeesStructureController extends Controller
  *
  */
         try {
+
+            $check_institution = Institute::all()->first();
+            if (!$check_institution){
+                return  redirect()->to('/institute')->with('toast_error', 'Please add institution details first');
+            }
             $fees_grp = FeesGroup::all();
             $ordinance = FeesOrdinance::all();
             $session = U1AcademicSession::where('status', '=', 'Active')->get();

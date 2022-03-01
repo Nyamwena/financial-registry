@@ -12,7 +12,6 @@
             </a>
         </li>
 
-
         <li>
             <a href="javascript:;" class="side-menu @if(Request::is('institute/*')) side-menu--active @endif">
                 <div class="side-menu__icon"> <i data-feather="inbox"></i> </div>
@@ -34,6 +33,76 @@
                 </li>
             </ul>
         </li>
+
+        <li class="side-nav__devider my-6"></li>
+
+        <li>
+            <a href="javascript:;" class="side-menu @if(Request::is('account/*')) side-menu--active @endif">
+                <div class="side-menu__icon"> <i data-feather="inbox"></i> </div>
+                <div class="side-menu__title"> Accounts Settings <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a href="{{route('account-type.index')}}" class="side-menu @if(Request::routeIs('account-type.index')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
+                        <div class="side-menu__title"> Account Type <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('chart.index')}}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
+                        <div class="side-menu__title"> Chart of Accounts <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('account-period.index')}}" class="side-menu @if(Request::routeIs('account-period.index')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
+                        <div class="side-menu__title"> Account Periods <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                    </a>
+                </li>
+
+
+                <li>
+                    <a href="{{route('center.index')}}" class="side-menu @if(Request::routeIs('center.index')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
+                        <div class="side-menu__title"> Responsibility Centres <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                    </a>
+                </li>
+
+
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu @if(Request::is('monetary/*')) side-menu--active @endif">
+                <div class="side-menu__icon"> <i data-feather="inbox"></i> </div>
+                <div class="side-menu__title"> Currency & Payments <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a href="{{route('monetary.currency-index')}}" class="side-menu @if(Request::routeIs('monetary.currency-index')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
+                        <div class="side-menu__title"> Currency Setup <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('monetary.exchange-index')}}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
+                        <div class="side-menu__title"> Exchange Rate <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('monetary.payment-method-index')}}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
+                        <div class="side-menu__title"> Payment Method<i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+
         <li class="side-nav__devider my-6"></li>
         <li>
             <a href="javascript:;" class="side-menu @if(Request::is('fees/*')) side-menu--active @endif">
@@ -67,49 +136,27 @@
         </li>
 
 
-        <li class="side-nav__devider my-6"></li>
 
+
+
+
+        <li class="side-nav__devider my-6"></li>
         <li>
-            <a href="javascript:;" class="side-menu @if(Request::is('account/*')) side-menu--active @endif">
+            <a href="javascript:;" class="side-menu @if(Request::is('invoice-billing/*')) side-menu--active @endif">
                 <div class="side-menu__icon"> <i data-feather="inbox"></i> </div>
-                <div class="side-menu__title"> Accounts Settings <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                <div class="side-menu__title">Billing<i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
             </a>
             <ul class="">
-
                 <li>
-                    <a href="{{route('account-period.index')}}" class="side-menu @if(Request::routeIs('account-period.index')) side-menu--active @endif">
-                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
-                        <div class="side-menu__title"> Account Periods <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                    <a href="{{route('invoice-billing.bill-one')}}" class="side-menu @if(Request::routeIs('invoice-billing.bill-one')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
+                        <div class="side-menu__title">Billing Customer</div>
                     </a>
                 </li>
-
-
                 <li>
-                    <a href="{{route('center.index')}}" class="side-menu @if(Request::routeIs('center.index')) side-menu--active @endif">
-                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
-                        <div class="side-menu__title"> Responsibility Centres <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{route('account-period.index')}}" class="side-menu @if(Request::routeIs('account-period.index')) side-menu--active @endif">
-                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
-                        <div class="side-menu__title"> Account Periods <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
-                    </a>
-                </li>
-
-
-                <li>
-                    <a href="{{route('account-type.index')}}" class="side-menu @if(Request::routeIs('account-type.index')) side-menu--active @endif">
-                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
-                        <div class="side-menu__title"> Account Type <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{route('chart.index')}}" class="side-menu">
-                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
-                        <div class="side-menu__title"> Chart of Accounts <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                    <a href="{{route('invoice-billing.index')}}" class="side-menu @if(Request::routeIs('invoice-billing.index')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
+                        <div class="side-menu__title">Bulk Billing</div>
                     </a>
                 </li>
 
@@ -117,70 +164,40 @@
         </li>
 
         <li class="side-nav__devider my-6"></li>
-
-
         <li>
-            <a href="javascript:;" class="side-menu @if(Request::is('monetary/*')) side-menu--active @endif">
+            <a href="javascript:;" class="side-menu @if(Request::is('inventory/*')) side-menu--active @endif">
                 <div class="side-menu__icon"> <i data-feather="inbox"></i> </div>
-                <div class="side-menu__title"> Monetary Settings <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                <div class="side-menu__title">Inventory/Services<i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
             </a>
             <ul class="">
                 <li>
-                    <a href="{{route('monetary.currency-index')}}" class="side-menu @if(Request::routeIs('monetary.currency-index')) side-menu--active @endif">
-                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
-                        <div class="side-menu__title"> Currency Setup <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{route('monetary.exchange-index')}}" class="side-menu">
-                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
-                        <div class="side-menu__title"> Exchange Rate <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{route('monetary.payment-method-index')}}" class="side-menu">
-                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
-                        <div class="side-menu__title"> Payment Method<i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
-                    </a>
-                </li>
-
-
-                <li>
-                    <a href="{{route('account-type.index')}}" class="side-menu @if(Request::routeIs('account-type.index')) side-menu--active @endif">
-                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
-                        <div class="side-menu__title"> Account Type <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{route('chart.index')}}" class="side-menu">
-                        <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
-                        <div class="side-menu__title"> Chart of Accounts <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                    <a href="{{route('inventory-service.index')}}" class="side-menu @if(Request::routeIs('inventory-service.index')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
+                        <div class="side-menu__title"> Add Services</div>
                     </a>
                 </li>
 
             </ul>
         </li>
 
+
         <li class="side-nav__devider my-6"></li>
+        <li>
+            <a href="javascript:;" class="side-menu @if(Request::is('age-analysis/*')) side-menu--active @endif">
+                <div class="side-menu__icon"> <i data-feather="inbox"></i> </div>
+                <div class="side-menu__title">Reports<i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a href="{{route('age-analysis.index')}}" class="side-menu @if(Request::routeIs('age-analysis.index')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
+                        <div class="side-menu__title"> Age Analysis</div>
+                    </a>
+                </li>
 
-            <li>
-                <a href="javascript:;" class="side-menu">
-                    <div class="side-menu__icon"> <i data-feather="inbox"></i> </div>
-                    <div class="side-menu__title"> User  Management <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
-                </a>
-                <ul class="">
-                    <li>
-                        <a href="#" class="side-menu">
-                            <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
-                            <div class="side-menu__title"> Add Users <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
-                        </a>
-                    </li>
+            </ul>
+        </li>
 
-                </ul>
-            </li>
 
     </ul>
 </nav>

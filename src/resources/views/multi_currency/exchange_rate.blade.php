@@ -101,18 +101,18 @@
 
                             <td class=" border-b">
 {{--                                {{$rate->fl_currency_code->fl_exchange_bulletino}}--}}
-                                    Test
+
                             </td>
                             <td class=" border-b">
 {{--                                {{$rate->fl_currency_name}} <br>--}}
 {{--                                {{$rate->fl_currency_code->fl_base_rate_amount}}--}}
-                                Test
+
                             </td>
                             <td class=" border-b">
 
 {{--                                {{$rate->fl_currency_name}} <br>--}}
 {{--                                {{$rate->fl_currency_code->fl_dest_rate}}--}}
-                                Test
+
                             </td>
                             <td class=" border-b">
 {{--                                @if($rate->fl_currency_code->fl_bulletin_active == 1)--}}
@@ -120,7 +120,7 @@
 {{--                                @elseif($rate->fl_currency_code->fl_bulletin_active == 0)--}}
 {{--                                    No--}}
 {{--                                @endif--}}
-                                Test
+
                             </td>
 
 {{--                            <td class="border-b w-5">--}}

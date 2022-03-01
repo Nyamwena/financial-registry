@@ -13,9 +13,14 @@
                         <div class="grid grid-cols-12 gap-4 row-gap-5 mt-5">
 
                             <div class="intro-y col-span-12 sm:col-span-6">
+                                <div class="mb-2">Fees Group Description</div>
+                                <input type="text"  class="input w-full border flex-1" name="fl_description" required>
+                            </div>
+
+                            <div class="intro-y col-span-12 sm:col-span-6">
                                 <div class="mb-2">Faculty/Department Code</div>
                                 <select name="fl_major_code" class="input w-full border flex-1 select2"   id="" required>
-                                    <option value="1">----select faculty/department code------</option>
+                                    <option  disabled>----select faculty/department code------</option>
                                     @foreach($dept_code as $code)
                                         <option value="{{$code->id}}">{{$code->name}}</option>
                                     @endforeach
@@ -24,8 +29,8 @@
 
                             <div class="intro-y col-span-12 sm:col-span-6">
                                 <div class="mb-2">Programme</div>
-                                <select name="fl_minor_code1[]" class="input w-full border flex-1 select2"  multiple id="" required>
-                                    <option value="1">----select faculty/department code------</option>
+                                <select name="fl_minor_code1[]" class="input w-full border flex-1 select2"  multiple id="" >
+                                    <option disabled>----select programme------</option>
                                     @foreach( $programme_code as $code)
                                         <option value="{{$code->programmeCode}}">{{$code->programmeName}}</option>
                                     @endforeach
@@ -45,7 +50,7 @@
                             <div class="intro-y col-span-12 sm:col-span-6">
                                 <div class="mb-2">Session/Term</div>
                                 <select name="fl_term_code" class="input w-full border flex-1 select2"   id="">
-                                    <option value="1">----select faculty/department code------</option>
+                                    <option disabled>----select session/term------</option>
                                     @foreach($session as $code)
                                         <option value="{{$code->id}}">{{$code->academic_session_name}}   {{'Year--->'}} {{$code->academic_year}}</option>
                                     @endforeach
@@ -73,53 +78,40 @@
                     <caption class="text-2xl text-green-600">Fees Group</caption>
                     <thead>
                     <tr>
-                        <th class="border-b-2 whitespace-no-wrap">Programme</th>
+                        <th class="border-b-2 whitespace-no-wrap">Description</th>
                         <th class="border-b-2 whitespace-no-wrap">Faculty</th>
-                        <th class="border-b-2 whitespace-no-wrap">Intake Type</th>
+                        <th class="border-b-2 whitespace-no-wrap">Programme</th>
                         <th class="border-b-2  whitespace-no-wrap">ACTIONS</th>
                     </tr>
                     </thead>
                     <tbody>
 
-                    {{--                    @foreach($exchange_rate as $rate)--}}
+                   @foreach($fees_grp  as $grp)
                     <tr>
 
                         <td class=" border-b">
-                            {{--                                {{$rate->fl_currency_code->fl_exchange_bulletino}}--}}
-                            Test
+                            {{$grp->fl_description}}
                         </td>
                         <td class=" border-b">
-                            {{--                                {{$rate->fl_currency_name}} <br>--}}
-                            {{--                                {{$rate->fl_currency_code->fl_base_rate_amount}}--}}
-                            Test
+                            {{$grp->fl_major_code1}}
                         </td>
                         <td class=" border-b">
-
-                            {{--                                {{$rate->fl_currency_name}} <br>--}}
-                            {{--                                {{$rate->fl_currency_code->fl_dest_rate}}--}}
-                            Test
-                        </td>
-                        <td class=" border-b">
-                            {{--                                @if($rate->fl_currency_code->fl_bulletin_active == 1)--}}
-                            {{--                                    Yes--}}
-                            {{--                                @elseif($rate->fl_currency_code->fl_bulletin_active == 0)--}}
-                            {{--                                    No--}}
-                            {{--                                @endif--}}
-                            Test
+                            {{$grp->fl_minor_code1}}
                         </td>
 
-                        {{--                            <td class="border-b w-5">--}}
-                        {{--                                <div class="flex sm:justify-center items-center">--}}
-                        {{--                                    <a class="flex items-center mr-3 edit" href="#" data-toggle="modal"--}}
-                        {{--                                       data-target="#edit_currency"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i>--}}
-                        {{--                                        Edit--}}
-                        {{--                                    </a>--}}
-                        {{--                                    <br>--}}
-                        {{--                                </div>--}}
-                        {{--                            </td>--}}
+
+                                                    <td class="border-b w-5">
+                                                        <div class="flex sm:justify-center items-center">
+                                                            <a class="flex items-center mr-3 edit" href="#" data-toggle="modal"
+                                                               data-target="#edit_currency"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i>
+                                                                Edit
+                                                            </a>
+                                                            <br>
+                                                        </div>
+                                                    </td>
 
                     </tr>
-                    {{--                    @endforeach--}}
+                                        @endforeach
 
                     </tbody>
                 </table>

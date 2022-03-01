@@ -12,6 +12,7 @@ class AccountPeriodDetail extends Model
     protected $table = 'tbl_period_dtl';
     protected $fillable = [
       'fl_period_det_name',
+        'fl_period_code',
       'fl_dtl_date_a',
       'fl_dtl_date_z',
     ];

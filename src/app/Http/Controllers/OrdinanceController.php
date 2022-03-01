@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FeesOrdinance;
+use App\Models\Institute;
 use Illuminate\Http\Request;
 
 class OrdinanceController extends Controller
@@ -10,6 +11,10 @@ class OrdinanceController extends Controller
 
     public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
+        $check_institution = Institute::all()->first();
+        if (!$check_institution){
+            return  redirect()->to('/institute')->with('toast_error', 'Please add institution details first');
+        }
 
         $ordinance = FeesOrdinance::all();
 

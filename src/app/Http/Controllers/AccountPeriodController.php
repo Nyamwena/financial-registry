@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\AccountPeriod;
 use App\Models\AccountPeriodDetail;
+use App\Models\Institute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Validator;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use function PHPUnit\Framework\throwException;
 
 class AccountPeriodController extends Controller
 {
@@ -14,6 +19,10 @@ class AccountPeriodController extends Controller
 
     public function  index()
     {
+        $check_institution = Institute::all()->first();
+        if (!$check_institution){
+            return  redirect()->to('/institute')->with('toast_error', 'Please add institution details first');
+        }
         $account_period = AccountPeriod::all();
         return view('account_period.add', compact('account_period'));
     }
@@ -62,6 +71,8 @@ class AccountPeriodController extends Controller
 //        }
 
         try {
+
+           // dd($request);
             DB::beginTransaction();
             $period_detail = AccountPeriodDetail::create($request->except(['_token']));
             if($period_detail){
@@ -71,6 +82,7 @@ class AccountPeriodController extends Controller
 
         } catch (\Exception $exception){
             DB::rollBack();
+            //dd($exception->getMessage());
             return redirect()->back()->with('info', $exception->getMessage());
         }
     }

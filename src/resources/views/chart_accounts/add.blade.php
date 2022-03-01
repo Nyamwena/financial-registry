@@ -93,6 +93,79 @@
                 </form>
             </div>
             <!-- END: Form Layout -->
+
+            <div class="intro-y datatable-wrapper box p-5 mt-5">
+                <h1></h1>
+                <table id="data-source-1" class="table table-report table-report--bordered display datatable w-full">
+                    <caption class="text-2xl text-green-600">Chart Of Accounts</caption>
+                    <thead>
+                    <tr>
+                        <th class="border-b-2 whitespace-no-wrap">Account number</th>
+                        <th class="border-b-2 whitespace-no-wrap">Account name</th>
+                        <th class="border-b-2 whitespace-no-wrap">Account main type</th>
+                        <th class="border-b-2 whitespace-no-wrap">Account sub type A</th>
+                        <th class="border-b-2 whitespace-no-wrap">Account sub type B</th>
+                        <th class="border-b-2 whitespace-no-wrap">Is Bank</th>
+                        <th class="border-b-2  whitespace-no-wrap">ACTIONS</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    @foreach($chart_accounts as $chart_account)
+                        <tr>
+
+                            <td class=" border-b">
+                                {{--                                {{$rate->fl_currency_code->fl_exchange_bulletino}}--}}
+                                {{$chart_account->fl_account_num}}
+
+                            </td>
+                            <td class=" border-b">
+                                {{--                                {{$rate->fl_currency_name}} <br>--}}
+                                {{--                                {{$rate->fl_currency_code->fl_base_rate_amount}}--}}
+                                {{$chart_account->fl_account_name}}
+
+                            </td>
+                            <td class=" border-b">
+
+                                {{--                                {{$rate->fl_currency_name}} <br>--}}
+                                {{--                                {{$rate->fl_currency_code->fl_dest_rate}}--}}
+                                {{$chart_account->account_type_main->fl_account_type}}
+                            </td>
+
+                            <td class=" border-b">
+                                {{$chart_account->account_type_a->fl_account_type_name}}
+
+                            </td>
+
+                            <td class=" border-b">
+                                {{$chart_account->account_type_b->fl_account_type_name}}
+
+                            </td>
+
+                            <td class=" border-b">
+                                {{$chart_account->fl_account_bank}}
+
+                            </td>
+
+
+                            <td class="border-b w-5">
+                                <div class="flex sm:justify-center items-center">
+                                    <a class="flex items-center mr-3 edit" href="#" data-toggle="modal"
+                                       data-target="#edit_currency"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i>
+                                        Edit
+                                    </a>
+                                    <br>
+                                </div>
+                            </td>
+
+                        </tr>
+
+
+                    @endforeach
+
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     @include('sweetalert::alert')

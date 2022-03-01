@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FeesGroup;
+use App\Models\Institute;
 use App\Models\U1AcademicSession;
 use App\Models\U1Department;
 use App\Models\U1Programme;
@@ -15,14 +16,19 @@ class FeesGroupController extends Controller
 
 
     public function index(){
+        $check_institution = Institute::all()->first();
+        if (!$check_institution){
+            return  redirect()->to('/institute')->with('toast_error', 'Please add institution details first');
+        }
         $dept_code = U1Department::all();
         $session = U1AcademicSession::where('status', '=', 'Active')->get();
 
 
         $programme_code = U1Programme::all();
         $intake_type = U2IntakeType::all();
+        $fees_grp = FeesGroup::all();
 
-        return view('fees_grp.add', compact('dept_code','session','programme_code','intake_type'));
+        return view('fees_grp.add', compact('dept_code','session','programme_code','intake_type','fees_grp'));
     }
 
     public function  create_fees_group(Request $request){

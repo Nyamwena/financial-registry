@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccountTypes;
+use App\Models\Institute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -16,7 +17,12 @@ class AccountTypesController extends Controller
      */
     public function index()
     {
-        return view('account_types.add');
+        $check_institution = Institute::all()->first();
+        $account_types = AccountTypes::all();
+        if (!$check_institution){
+            return  redirect()->to('/institute')->with('toast_error', 'Please add institution details first');
+        }
+        return view('account_types.add', compact('account_types'));
     }
 
     /**
@@ -76,7 +82,7 @@ class AccountTypesController extends Controller
             return redirect()->back()->with('success','Saved Successfully');
         }catch (\Exception $exception){
             DB::rollback();
-            //dd($exception->getMessage());
+          //  dd($exception->getMessage());
             return redirect()->back()->with('toast_error',  $exception->getMessage());
         }
     }

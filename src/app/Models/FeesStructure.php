@@ -13,4 +13,8 @@ class FeesStructure extends Model
 
     protected $fillable = ['fl_feegroup_code','fl_ordinance_number',
         'fl_session_code','fl_currency_code','fl_amount','fl_service_code'];
+
+    public function  service(){
+        return $this->hasOne(Services::class,'fl_service_code','fl_service_code');
+    }
 }

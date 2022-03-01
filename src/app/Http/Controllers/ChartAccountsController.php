@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AccountMainType;
 use App\Models\AccountTypes;
 use App\Models\ChartAccounts;
+use App\Models\Institute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,10 +18,19 @@ class ChartAccountsController extends Controller
      */
     public function index()
     {
+        $check_institution = Institute::all()->first();
+        if (!$check_institution){
+            return  redirect()->to('/institute')->with('toast_error', 'Please add institution details first');
+        }
         $account_type = AccountTypes::all();
 
+        $chart_accounts= ChartAccounts::with('account_type_main',
+            'account_type_a','account_type_b')
+                        ->get();
+
+       // dd($chart_accounts->fl_account_num);
         $account_main = AccountMainType::all();
-        return view('chart_accounts.add', compact('account_type', 'account_main'));
+        return view('chart_accounts.add', compact('account_type', 'account_main','chart_accounts'));
     }
 
     /**

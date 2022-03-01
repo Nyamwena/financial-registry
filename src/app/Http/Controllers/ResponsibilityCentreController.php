@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use App\Models\AccountPeriod;
 use App\Models\ChartAccounts;
+use App\Models\Institute;
+use App\Models\MicroService;
 use App\Models\Responsibility;
 use App\Models\ServiceResponsibility;
 use App\Models\Services;
@@ -21,14 +23,19 @@ class ResponsibilityCentreController extends Controller
     public function index()
     {
 
+        $check_institution = Institute::all()->first();
+        if (!$check_institution){
+            return  redirect()->to('/institute')->with('toast_error', 'Please add institution details first');
+        }
        $centres = Responsibility::all();
        $account_numbers= ChartAccounts::all();
        $service_responsibility = ServiceResponsibility::all();
        $period_code = AccountPeriod::all()->where('fl_closed' ,'=',0);
        $service = Services::all();
+        $microservice  = MicroService::all();
       //dd($period_code);
         return view('responsibility_centre.add',
-            compact('centres','account_numbers','service_responsibility','period_code','service'));
+            compact('centres','account_numbers','service_responsibility','period_code','service','microservice'));
     }
 
     /**

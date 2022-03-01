@@ -65,7 +65,7 @@
             <div class="intro-y datatable-wrapper box p-5 mt-5">
                 <h1></h1>
                 <table id="data-source-1" class="table table-report table-report--bordered display datatable w-full">
-                     <caption class="text-2xl text-green-600">Account Period Details</caption>
+                     <caption class="text-2xl text-green-600">Account Period Header</caption>
                     <thead>
                     <tr>
                         <th class="border-b-2 whitespace-no-wrap">Period Code</th>

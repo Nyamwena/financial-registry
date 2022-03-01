@@ -12,9 +12,16 @@
                     <div class="">
                         <div class="grid grid-cols-12 gap-4 row-gap-5 mt-5">
 
-                            <div class="intro-y col-span-12 sm:col-span-3">
+                            <div class="intro-y col-span-12 sm:col-span-6">
                                 <div class="mb-2">Registration code</div>
                                 <input type="text" class="input w-full border flex-1" name="fl_registration_code"  required>
+                                <span id="error_code"></span>
+
+                            </div>
+
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <div class="mb-2">Registration code</div>
+                                <input type="date" class="input w-full border flex-1" name="fl_date_registered"  required>
                                 <span id="error_code"></span>
 
                             </div>
@@ -25,9 +32,7 @@
                                 <span id="error_code"></span>
                             </div>
 
-
-
-                            <div class="intro-y col-span-12 sm:col-span-6">
+                            <div class="intro-y col-span-12 sm:col-span-9">
                                 <div class="mb-2">Institution Name</div>
                                 <input type="text" class="input w-full border flex-1" placeholder=""  name="fl_institution_name" required>
                                 <span id="error_code"></span>
@@ -132,6 +137,12 @@
                                 <span id="error_code"></span>
 
                             </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <div class="mb-2">Logo</div>
+                                <input type="file" name="imageUpload" id="imageUpload" value="import institute logo" name="upload">
+                                <span id="error_code"></span>
+
+                            </div>
 
                             <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">
                                 <button type="reset" class="button w-24 justify-center block bg-red-200 text-gray-600">Reset</button>
@@ -140,6 +151,67 @@
                         </div>
                     </div>
                 </form>
+            </div>
+            <!-- END: Form Layout -->
+        </div>
+        <div class="intro-y col-span-6 lg:col-span-12">
+            <!-- BEGIN: Form Layout -->
+
+
+
+            <div class="intro-y datatable-wrapper box p-5 mt-5">
+                <h1></h1>
+                <table id="data-source-1" class="table table-report table-report--bordered display datatable w-full">
+                    <caption class="text-2xl text-green-600">Institution</caption>
+                    <thead>
+                    <tr>
+                        <th class="border-b-2 whitespace-no-wrap">Registration Code</th>
+                        <th class="border-b-2 whitespace-no-wrap">Registration Date</th>
+                        <th class="border-b-2 whitespace-no-wrap">Short Name</th>
+
+                        <th class="border-b-2 whitespace-no-wrap">Institution Name</th>
+                        <th class="border-b-2 whitespace-no-wrap">Action</th>
+
+
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    @foreach($institute as $institutee)
+                        <tr>
+
+                            <td class=" border-b">
+
+                                {{$institutee->fl_registration_code}}
+                            </td>
+                            <td class=" border-b">
+                                {{$institutee->fl_date_registered}}
+                            </td>
+
+                            <td class=" border-b">
+                                {{$institutee->fl_institution_shortname}}
+                            </td>
+
+                            <td class=" border-b">
+                                {{$institutee->fl_institution_name}}
+                            </td>
+
+                            <td class="border-b w-5">
+                                <div class="flex sm:justify-center items-center">
+                                    <a class="flex items-center mr-3 edit" href="#" data-toggle="modal"
+                                       data-target="#edit_currency"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i>
+                                        Edit
+                                    </a>
+                                    <br>
+                                </div>
+                            </td>
+
+                        </tr>
+                    @endforeach
+
+                    </tbody>
+                </table>
             </div>
             <!-- END: Form Layout -->
         </div>

@@ -19,8 +19,10 @@ return new class extends Migration
             $table->unsignedBigInteger('fl_location_code')->default(0);
             $table->double('fl_on_hand')->default(-1);
             $table->double('fl_on_order')->default(-1);
+            $table->double('fl_available_qty')->default(-1);
             $table->decimal('fl_unit_cost', 13,4);
             $table->decimal('fl_retail_price', 13,4);
+            $table->string('fl_service_dest')->nullable();
             $table->timestamps();
         });
     }
