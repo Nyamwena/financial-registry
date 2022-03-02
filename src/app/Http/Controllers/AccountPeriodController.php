@@ -32,20 +32,55 @@ class AccountPeriodController extends Controller
     {
 
         $this->validate($request,[
-            'fl_date_a' =>'required|date|after:yesterday',
+            'fl_date_a' =>'required|date',
             'fl_date_z'=>'required|date|after:fl_date_a',
             'fl_period_code' => 'unique:tbl_period_hdr'
         ]);
         try {
-
             DB::beginTransaction();
-           $account_period = AccountPeriod::create($request->except(['_token']));
-//            if ($account_period){
-//                AccountPeriodDetail::create($request->except(['_token']));
-//            }
+            $number = $request->input('number_of_periods');
+            $date_a = $request->input('fl_date_a');
+            $date_z = $request->input('fl_date_z');
+            $period_code = $request->input('fl_period_code');
+            $period_name = $request->input('fl_period_name');
+            $timeStart = strtotime($date_a);
+            $timeEnd   = strtotime($date_z);
+            $out       = [];
+
+            // dd($period_code);
+
+
+            $milestones[] = $timeStart;
+            $timeEndMonth = strtotime('+'.$number .'month', $timeStart);
+
+            //dd($timeEndMonth);
+            while ($timeEndMonth < $timeEnd) {
+                $milestones[] = $timeEndMonth;
+                $timeEndMonth = strtotime('+'.$number .'month', $timeEndMonth);
+            }
+            $milestones[] = $timeEnd;
+
+            $count = count($milestones);
+            for ($i = 1; $i < $count; $i++) {
+                $out[] = [
+                    'fl_dtl_date_a' => date('Y-m-d H:i:s', $milestones[$i-1]), // Here you can apply your formatting (like "date('Y-m-d H:i:s', $milestones[$i-1])") if you don't won't want just timestamp
+                    'fl_dtl_date_z'   => date('Y-m-d H:i:s', $milestones[$i] - 1),
+                    'fl_period_det_name' => $period_name.'-' . 0 + $i,
+                    'fl_period_code' => $period_code
+                ];
+            }
+
+            $account_period = AccountPeriod::create($request->except(['_token']));
+            if ($account_period){
+                AccountPeriodDetail::insert($out);
+            }
+
+            /*find the diff between dates
+             * divide by the number stated and get the total number of days/months
+             *
+             */
             DB::commit();
             return redirect()->back()->with('success', 'Account Period Saved Successfully');
-
         } catch (\Exception $exception){
             DB::rollBack();
             return redirect()->back()->with('error', $exception->getMessage());
@@ -60,25 +95,52 @@ class AccountPeriodController extends Controller
         ]);
 
 
-
-//        $validator = Validator::make($request->all(), [
-//            'title' => 'required|min:3',
-//            'body' => 'required|min:3'
-//        ]);
-//
-//        if ($validator->fails()) {
-//            return back()->with('errors', $validator->messages()->all()[0])->withInput();
-//        }
-
         try {
 
-           // dd($request);
-            DB::beginTransaction();
-            $period_detail = AccountPeriodDetail::create($request->except(['_token']));
-            if($period_detail){
-                DB::commit();
-                return redirect()->back()->with('success', 'Account Period Detail Saved Successfully');
+
+            $number = $request->input('number_of_periods');
+            $date_a = $request->input('fl_date_a');
+            $date_z = $request->input('fl_date_z');
+            $period_code = $request->input('fl_period_code');
+            $period_name = $request->input('fl_period_name');
+            $timeStart = strtotime($date_a);
+            $timeEnd   = strtotime($date_z);
+            $out       = [];
+
+            // dd($period_code);
+
+
+            $milestones[] = $timeStart;
+            $timeEndMonth = strtotime('+'.$number .'month', $timeStart);
+
+            //dd($timeEndMonth);
+            while ($timeEndMonth < $timeEnd) {
+                $milestones[] = $timeEndMonth;
+                $timeEndMonth = strtotime('+'.$number .'month', $timeEndMonth);
             }
+            $milestones[] = $timeEnd;
+
+            $count = count($milestones);
+            for ($i = 1; $i < $count; $i++) {
+                $out[] = [
+                    'fl_dtl_date_a' => date('Y-m-d H:i:s', $milestones[$i-1]), // Here you can apply your formatting (like "date('Y-m-d H:i:s', $milestones[$i-1])") if you don't won't want just timestamp
+                    'fl_dtl_date_z'   => date('Y-m-d H:i:s', $milestones[$i] - 1),
+                    'fl_period_det_name' => $period_name.'-' . 0 + $i,
+                    'fl_period_code' => $period_code
+                ];
+            }
+
+            $account_period = AccountPeriod::create($request->except(['_token']));
+            if ($account_period){
+                AccountPeriodDetail::insert($out);
+            }
+
+            /*find the diff between dates
+             * divide by the number stated and get the total number of days/months
+             *
+             */
+            DB::commit();
+            return redirect()->back()->with('success', 'Account Period Saved Successfully');
 
         } catch (\Exception $exception){
             DB::rollBack();

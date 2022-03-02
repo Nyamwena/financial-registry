@@ -43,6 +43,14 @@
                                 @enderror
                             </div>
 
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <div class="mb-2">Number of months between the date range</div>
+                                <input type="number" class="input w-full border flex-1 @error('fl_date_z') is-invalid @enderror" placeholder="" name="number_of_periods" required>
+                                @error('fl_date_z')
+                                <div class="mb-2 text-red-50"> {{$message}}</div>
+                                @enderror
+                            </div>
+
                             <input type="hidden" class="input w-full border flex-1" value="1"  name="fl_closed"  required>
                             <input type="hidden" class="input w-full border flex-1" value="0"  name="fl_archived"  required>
                             <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">
