@@ -33,9 +33,14 @@ class ResponsibilityCentreController extends Controller
        $period_code = AccountPeriod::all()->where('fl_closed' ,'=',0);
        $service = Services::all();
         $microservice  = MicroService::all();
+        $access_service= ServiceResponsibility::with('centre_name','service_name',
+            'account_periods')
+            ->get();
+      //  dd($access_service);
       //dd($period_code);
         return view('responsibility_centre.add',
-            compact('centres','account_numbers','service_responsibility','period_code','service','microservice'));
+            compact('centres','account_numbers','service_responsibility','period_code','service',
+                'microservice','access_service'));
     }
 
     /**

@@ -4,7 +4,7 @@
 
     <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
         <h2 class="text-lg font-medium mr-auto">
-            Fees Collection
+           Billing
         </h2>
         <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
             <a href="{{route('fees-report.index')}}"  class="button text-white bg-theme-1 shadow-md mr-2">
@@ -32,7 +32,7 @@
                     <div class="font-medium text-base"></div>
 
                     <div class="intro-y box p-8">
-                        <form action="{{route('invoice.remittance-post')}}"  method="post">
+                        <form action="{{route('invoice-billing.bill-one-store')}}"  method="post">
                             @csrf
                             <div class="">
                                 <div class="grid grid-cols-12 gap-4 row-gap-5 mt-5">
@@ -45,13 +45,27 @@
                                     </div>
 
                                     <div class="intro-y col-span-12 sm:col-span-6">
+                                        <div class="mb-2">Invoice Number</div>
+                                        <input type="text" id="" class="input w-full border flex-1" placeholder=""  name="fl_invoice_number" >
+                                        @error('fl_invoice_number')
+                                        <div class="mb-2 text-red-50"> {{$message}}</div>
+                                        @enderror
+
+                                    </div>
+
+                                    <div class="intro-y col-span-12 sm:col-span-6">
                                         <div class="mb-2">Invoice Service Date</div>
-                                        <input type="date" class="input w-full border flex-1" id="fl_service_date" placeholder=" " name="fl_invoice_number"   required>
+                                        <input type="date" class="input w-full border flex-1" id="fl_service_date" placeholder=" " name="fl_service_date"   required>
                                         <span id="error_code"></span>
                                     </div>
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <div class="mb-2">Invoice Due Date</div>
                                         <input type="date" class="input w-full border flex-1" placeholder=" " name="fl_due_date"  required>
+                                        <span id="error_code"></span>
+                                    </div>
+                                    <div class="intro-y col-span-12 sm:col-span-6">
+                                        <div class="mb-2">Invoice Date</div>
+                                        <input type="date" class="input w-full border flex-1" placeholder=" " name="fl_invoice_date"  required>
                                         <span id="error_code"></span>
                                     </div>
 
@@ -60,11 +74,21 @@
                                         <input type="number" class="input w-full border flex-1" placeholder=" " name="fl_amount_due"  required>
                                         <span id="error_code"></span>
                                     </div>
+
+                                    <div class="intro-y col-span-12 sm:col-span-12">
+                                        <div class="mb-2">Service /Product</div>
+                                        <select name="fl_service_code" id="fl_service_code" class="input w-full border flex-1 select2" required>
+                                            <option value="" selected disabled> CHOOSE SERVICE</option>
+                                            @foreach($services as $service )
+                                                <option value="{{$service->fl_service_code}}">{{$service->fl_service_name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                     <input type="hidden" name="fl_closed" value="0">
 
                                     <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">
                                         <button type="reset" class="button w-24 justify-center block bg-red-200 text-gray-600">Reset</button>
-                                        <button type="submit" class="button w-auto justify-center block bg-theme-1 text-white ml-2" formtarget="_blank">Process Payment</button>
+                                        <button type="submit" class="button w-auto justify-center block bg-theme-1 text-white ml-2" >Save</button>
                                     </div>
                                 </div>
                             </div>
@@ -89,15 +113,13 @@
                         <tr>
                             <th class="border-b-2 whitespace-no-wrap">Customer Account</th>
                             <th class="border-b-2 whitespace-no-wrap">Customer Name</th>
-                            <th class="border-b-2 whitespace-no-wrap">Invoice Number</th>
                         </tr>
                         </thead>
                         <tbody >
                         @foreach($customers as $customer)
                             <tr class="cursor-pointer">
                                 <td class="edit">{{$customer->fl_consumer_account}}</td>
-                                <td>{{$customer->fl_firstname}}   {{$customer->fl_lastname}}</td>
-                                <td>{{$customer->fl_invoice_number}}</td>
+                                <td class="edit">{{$customer->fl_firstname}}   {{$customer->fl_lastname}}</td>
                             </tr>
                         @endforeach
 

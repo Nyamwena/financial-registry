@@ -34,11 +34,13 @@ class FeesStructureController extends Controller
             $service_code = Services::all();
             $currency = Currency::where('fl_active','=',1)->get();
           //  dd($session);
+            $fees_structure = FeesStructure::with('service','fees_group','ordinance','currency')
+                                    ->get();
             if(!$fees_grp && !$ordinance && !$session && !$service_code && !$currency){
                 return  redirect()->back()->with('info', 'Some parameters are missing ');
             }else{
                 return view('fees_structure.add' , compact('fees_grp',
-                    'ordinance','session','service_code','currency'));
+                    'ordinance','session','service_code','currency','fees_structure'));
             }
 
         }catch (\Exception $exception){

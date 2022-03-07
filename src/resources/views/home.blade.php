@@ -62,6 +62,35 @@
                         </div>
                     </a>
                 </div>
+
+
+                <div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
+                    <a href="{{route('payment-plan.recommend')}}">
+                        <div class="report-box zoom-in">
+                            <div class="box p-5">
+                                <div class="flex">
+                                    <i data-feather="edit" class="report-box__icon text-theme-9"></i>
+                                </div>
+                                <div class="text-3xl font-bold leading-8 mt-6">{{$payment_plan}}</div>
+                                <div class="text-base text-gray-600 mt-1">Payment Plan Recommendations</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
+                    <a href="{{route('payment-plan.recommend')}}">
+                        <div class="report-box zoom-in">
+                            <div class="box p-5">
+                                <div class="flex">
+                                    <i data-feather="edit" class="report-box__icon text-theme-9"></i>
+                                </div>
+                                <div class="text-3xl font-bold leading-8 mt-6">{{$payment_plan_approve}}</div>
+                                <div class="text-base text-gray-600 mt-1">Approve Payment Plan </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -81,26 +110,26 @@
                             </div>
                         </div>
                     </a>
-                    <a href="" class="ml-auto  text-theme-1" style="margin: 5px !important;">
+                    <a href="{{route('sales-report.all')}}" class="ml-auto  text-theme-1" style="margin: 5px !important;">
                         <div class="box px-4 py-4 mb-3 flex items-center zoom-in">
                             <div class="ml-4 mr-auto">
-                                <div class="font-medium">Edit</div>
+                                <div class="font-medium">Sales Reports</div>
                             </div>
                         </div>
                     </a>
 
-                    <a href="" class="ml-auto text-theme-1" style="margin: 5px !important;">
+                    <a href="{{route('age-analysis.index')}}" class="ml-auto text-theme-1" style="margin: 5px !important;">
                         <div class="box px-4 py-4 mb-3 flex items-center zoom-in">
                             <div class="ml-4 mr-auto">
-                                <div class="font-medium">Add</div>
+                                <div class="font-medium">Age Analysis</div>
                             </div>
                         </div>
                     </a>
 
-                    <a href="" class="text-theme-1" style="margin: 5px !important;">
+                    <a href="{{route('customer-add.index')}}" class="text-theme-1" style="margin: 5px !important;">
                         <div class="box px-4 py-4 mb-3 flex items-center zoom-in">
                             <div class="ml-4 mr-auto">
-                                <div class="font-medium">Add New</div>
+                                <div class="font-medium">Add New Clients</div>
                             </div>
                         </div>
                     </a>

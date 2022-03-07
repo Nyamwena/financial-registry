@@ -91,50 +91,51 @@
                         <th class="border-b-2 whitespace-no-wrap">Exchange Rate ID</th>
                         <th class="border-b-2 whitespace-no-wrap">Base Currency</th>
                         <th class="border-b-2 whitespace-no-wrap">Destination  Currency</th>
+                        <th class="border-b-2 whitespace-no-wrap">Is it Active</th>
                         <th class="border-b-2  whitespace-no-wrap">ACTIONS</th>
                     </tr>
                     </thead>
                     <tbody>
 
-{{--                    @foreach($exchange_rate as $rate)--}}
+                    @foreach($exchange_rate as $rate)
                         <tr>
 
                             <td class=" border-b">
-{{--                                {{$rate->fl_currency_code->fl_exchange_bulletino}}--}}
+                                {{$rate->fl_exchange_bulletino}}
 
                             </td>
                             <td class=" border-b">
-{{--                                {{$rate->fl_currency_name}} <br>--}}
-{{--                                {{$rate->fl_currency_code->fl_base_rate_amount}}--}}
+                                {{$rate->currency_base->fl_currency_name}} <br>
+                                {{$rate->fl_base_rate_amount}}
 
                             </td>
                             <td class=" border-b">
 
-{{--                                {{$rate->fl_currency_name}} <br>--}}
-{{--                                {{$rate->fl_currency_code->fl_dest_rate}}--}}
+                                {{$rate->currency_dest->fl_currency_name}} <br>
+                                {{$rate->fl_dest_rate}}
 
                             </td>
                             <td class=" border-b">
-{{--                                @if($rate->fl_currency_code->fl_bulletin_active == 1)--}}
-{{--                                    Yes--}}
-{{--                                @elseif($rate->fl_currency_code->fl_bulletin_active == 0)--}}
-{{--                                    No--}}
-{{--                                @endif--}}
+                                @if($rate->fl_bulletin_active == 1)
+                                    Yes
+                                @elseif($rate->fl_bulletin_active == 0)
+                                    No
+                                @endif
 
                             </td>
 
-{{--                            <td class="border-b w-5">--}}
-{{--                                <div class="flex sm:justify-center items-center">--}}
-{{--                                    <a class="flex items-center mr-3 edit" href="#" data-toggle="modal"--}}
-{{--                                       data-target="#edit_currency"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i>--}}
-{{--                                        Edit--}}
-{{--                                    </a>--}}
-{{--                                    <br>--}}
-{{--                                </div>--}}
-{{--                            </td>--}}
+                            <td class="border-b w-5">
+                                <div class="flex sm:justify-center items-center">
+                                    <a class="flex items-center mr-3 edit" href="#" data-toggle="modal"
+                                       data-target="#edit_currency"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i>
+                                        Edit
+                                    </a>
+                                    <br>
+                                </div>
+                            </td>
 
                         </tr>
-{{--                    @endforeach--}}
+                    @endforeach
 
                     </tbody>
                 </table>

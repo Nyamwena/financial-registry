@@ -13,7 +13,7 @@ class InvoiceHeader extends Model
     protected $table = 'tbl_invoice_hdr';
 
     protected $fillable = ['fl_closed','fl_invoice_date','fl_practitioner_code',
-        'fl_service_date','fl_due_date','fl_amount_due'];
+        'fl_service_date','fl_due_date','fl_amount_due','fl_invoice_number'];
 
 
 

@@ -24,6 +24,11 @@ class Remittance extends Model
         return $this->hasOne(RemittanceDetail::class,'fl_remittance_num','fl_remittance_num');
     }
 
+
+    public function remittance_details(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(RemittanceDetail::class,'fl_remittance_num','fl_remittance_num');
+    }
     public function payment_method(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(PaymentMethods::class, 'fl_payment_code','fl_payment_code');

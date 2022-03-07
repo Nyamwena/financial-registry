@@ -18,10 +18,14 @@ class ExchangeRate extends Model
         'fl_dest_rate',
     ];
 
-    public function currency(){
-        return $this->hasOne(Currency::class,'fl_currency_code','fl_currency_code');
+    public function currency_base(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Currency::class,'fl_currency_code','fl_currency_code');
     }
 
-
+    public function currency_dest(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Currency::class,'fl_currency_code_dest','fl_currency_code');
+    }
 
 }

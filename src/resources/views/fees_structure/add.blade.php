@@ -93,53 +93,35 @@
                     <caption class="text-2xl text-green-600">Fees Structure</caption>
                     <thead>
                     <tr>
-                        <th class="border-b-2 whitespace-no-wrap">Programme</th>
-                        <th class="border-b-2 whitespace-no-wrap">Faculty</th>
-                        <th class="border-b-2 whitespace-no-wrap">Intake Type</th>
-                        <th class="border-b-2  whitespace-no-wrap">ACTIONS</th>
+                        <th class="border-b-2 whitespace-no-wrap">Fees Grp Name</th>
+                        <th class="border-b-2 whitespace-no-wrap">Service Name</th>
+                        <th class="border-b-2 whitespace-no-wrap">Ordinance</th>
+                        <th class="border-b-2  whitespace-no-wrap">Currency</th>
+                        <th class="border-b-2  whitespace-no-wrap">Fees Amount</th>
                     </tr>
                     </thead>
                     <tbody>
-
-                    {{--                    @foreach($exchange_rate as $rate)--}}
+                    @foreach($fees_structure as $struct)
                     <tr>
 
                         <td class=" border-b">
-                            {{--                                {{$rate->fl_currency_code->fl_exchange_bulletino}}--}}
-                            Test
+                          {{$struct->fees_group->fl_description}}
                         </td>
                         <td class=" border-b">
-                            {{--                                {{$rate->fl_currency_name}} <br>--}}
-                            {{--                                {{$rate->fl_currency_code->fl_base_rate_amount}}--}}
-                            Test
+                           {{$struct->service->fl_service_name}}
                         </td>
                         <td class=" border-b">
-
-                            {{--                                {{$rate->fl_currency_name}} <br>--}}
-                            {{--                                {{$rate->fl_currency_code->fl_dest_rate}}--}}
-                            Test
+                            {{$struct->ordinance->fl_desc}}
                         </td>
                         <td class=" border-b">
-                            {{--                                @if($rate->fl_currency_code->fl_bulletin_active == 1)--}}
-                            {{--                                    Yes--}}
-                            {{--                                @elseif($rate->fl_currency_code->fl_bulletin_active == 0)--}}
-                            {{--                                    No--}}
-                            {{--                                @endif--}}
-                            Test
+                       {{$struct->currency->fl_currency_name}}
                         </td>
 
-                        {{--                            <td class="border-b w-5">--}}
-                        {{--                                <div class="flex sm:justify-center items-center">--}}
-                        {{--                                    <a class="flex items-center mr-3 edit" href="#" data-toggle="modal"--}}
-                        {{--                                       data-target="#edit_currency"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i>--}}
-                        {{--                                        Edit--}}
-                        {{--                                    </a>--}}
-                        {{--                                    <br>--}}
-                        {{--                                </div>--}}
-                        {{--                            </td>--}}
-
+                        <td class=" border-b">
+                            {{round($struct->fl_amount, 2)}}
+                        </td>
                     </tr>
-                    {{--                    @endforeach--}}
+                    @endforeach
 
                     </tbody>
                 </table>

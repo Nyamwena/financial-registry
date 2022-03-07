@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('tbl_payment_plan', function (Blueprint $table) {
             $table->id('fl_payment_plan_ref');
             $table->date('fl_request_date');
-            $table->string('fl_customer_number', length: 10);
+            $table->string('fl_customer_number', length: 20);
             $table->string('fl_recommended_a')->nullable();
             $table->date('fl_date_recommended_a')->nullable();
             $table->string('fl_recommended_b')->nullable();

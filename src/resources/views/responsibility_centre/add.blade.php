@@ -10,9 +10,6 @@
             Assign Services to Centers
         </a>
 
-        <a href=""  class="button text-white bg-theme-1 shadow-md mr-2">
-            Service - Responsibility Centers
-        </a>
     </div>
 
     <div class="grid grid-cols-12 gap-6 mt-5">
@@ -107,6 +104,53 @@
                 </table>
             </div>
             <!-- END: Form Layout -->
+        </div>
+
+
+        <div class="intro-y col-span-6 lg:col-span-12">
+            <div class="intro-y datatable-wrapper box p-5 mt-5">
+                <h1></h1>
+                <table id="data-source-2" class="table table-report table-report--bordered display datatable w-full">
+                    <caption class="text-2xl text-green-600">Service Responsible Centre</caption>
+                    <thead>
+                    <tr>
+                        <th class="border-b-2 whitespace-no-wrap"> Centre Name</th>
+                        <th class="border-b-2 whitespace-no-wrap">Service Name</th>
+                        <th class="border-b-2 whitespace-no-wrap">Accounting Period</th>
+                        <th class="border-b-2  whitespace-no-wrap">ACTIONS</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {{--                    @foreach($exchange_rate as $rate)--}}
+                    @foreach($access_service as  $row)
+                        <tr>
+
+                            <td class=" border-b">
+                                {{$row->centre_name->fl_centre_name}}
+                            </td>
+                            <td class=" border-b">
+                                {{$row->service_name->fl_service_name}}
+                            </td>
+                            <td class=" border-b">
+                                {{$row->account_periods->fl_period_name}}
+                            </td>
+                            <td class="border-b w-5">
+                                <div class="flex sm:justify-center items-center">
+                                    <a class="flex items-center mr-3 edit" href="#" data-toggle="modal"
+                                       data-target="edit-responsibility"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i>
+                                        Edit
+                                    </a>
+                                    <br>
+                                </div>
+                            </td>
+
+                        </tr>
+                    @endforeach
+
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <div class="modal" id="header-footer-modal-preview">

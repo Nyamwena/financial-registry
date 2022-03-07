@@ -11,11 +11,10 @@
         "barryvdh/laravel-dompdf": "^1.0",
         "fruitcake/laravel-cors": "*",
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/fortify": "^1.11",
+        "laravel/fortify": "*",
         "laravel/framework": "^9.2",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
-        "laravel/ui": "^3.4",
         "phpoffice/phpspreadsheet": "*",
         "realrashid/sweet-alert": "^5.0"
     },

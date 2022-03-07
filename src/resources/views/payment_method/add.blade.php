@@ -58,56 +58,47 @@
             <div class="intro-y datatable-wrapper box p-5 mt-5">
                 <h1></h1>
                 <table id="data-source-1" class="table table-report table-report--bordered display datatable w-full">
-                    <caption class="text-2xl text-green-600">Exchange Rate</caption>
+                    <caption class="text-2xl text-green-600">Payment Method</caption>
                     <thead>
                     <tr>
-                        <th class="border-b-2 whitespace-no-wrap">Exchange Rate ID</th>
-                        <th class="border-b-2 whitespace-no-wrap">Base Currency</th>
-                        <th class="border-b-2 whitespace-no-wrap">Destination  Currency</th>
+                        <th class="border-b-2 whitespace-no-wrap">Description</th>
+                        <th class="border-b-2 whitespace-no-wrap">Shortcode</th>
+                        <th class="border-b-2 whitespace-no-wrap">Is it Active</th>
                         <th class="border-b-2  whitespace-no-wrap">ACTIONS</th>
                     </tr>
                     </thead>
                     <tbody>
 
-                    {{--                    @foreach($exchange_rate as $rate)--}}
+                    @foreach($payment_methods as $method)
                     <tr>
 
                         <td class=" border-b">
-                            {{--                                {{$rate->fl_currency_code->fl_exchange_bulletino}}--}}
-                            Test
+                            {{$method->fl_payment_descr}}
                         </td>
                         <td class=" border-b">
-                            {{--                                {{$rate->fl_currency_name}} <br>--}}
-                            {{--                                {{$rate->fl_currency_code->fl_base_rate_amount}}--}}
-                            Test
+                            {{$method->fl_payment_short_code}}
                         </td>
                         <td class=" border-b">
-
-                            {{--                                {{$rate->fl_currency_name}} <br>--}}
-                            {{--                                {{$rate->fl_currency_code->fl_dest_rate}}--}}
-                            Test
-                        </td>
-                        <td class=" border-b">
-                            {{--                                @if($rate->fl_currency_code->fl_bulletin_active == 1)--}}
-                            {{--                                    Yes--}}
-                            {{--                                @elseif($rate->fl_currency_code->fl_bulletin_active == 0)--}}
-                            {{--                                    No--}}
-                            {{--                                @endif--}}
-                            Test
+                            @if($method->fl_paymethod_active == 1 )
+                                    {{'Yes'}}
+                            @else
+                                {{'No'}}
+                            @endif
                         </td>
 
-                        {{--                            <td class="border-b w-5">--}}
-                        {{--                                <div class="flex sm:justify-center items-center">--}}
-                        {{--                                    <a class="flex items-center mr-3 edit" href="#" data-toggle="modal"--}}
-                        {{--                                       data-target="#edit_currency"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i>--}}
-                        {{--                                        Edit--}}
-                        {{--                                    </a>--}}
-                        {{--                                    <br>--}}
-                        {{--                                </div>--}}
-                        {{--                            </td>--}}
+
+                                                    <td class="border-b w-5">
+                                                        <div class="flex sm:justify-center items-center">
+                                                            <a class="flex items-center mr-3 edit" href="#" data-toggle="modal"
+                                                               data-target="#edit_currency"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i>
+                                                                Edit
+                                                            </a>
+                                                            <br>
+                                                        </div>
+                                                    </td>
 
                     </tr>
-                    {{--                    @endforeach--}}
+                                        @endforeach
 
                     </tbody>
                 </table>

@@ -164,7 +164,8 @@ return [
         'fl_account_type_name' => 'account type name',
         'fl_account_num' => 'account number',
         'fl_period_code' => 'account period code',
-
+        'fl_consumer_number' => 'Customer Number',
+        'fl_consumer_account' => 'Customer Account'
     ],
 
 ];

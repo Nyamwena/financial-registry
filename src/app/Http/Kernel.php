@@ -2,6 +2,11 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AdminAccess;
+use App\Http\Middleware\BursarAccess;
+use App\Http\Middleware\ChiefAccountantAccess;
+use App\Http\Middleware\ClerkAccess;
+use App\Http\Middleware\RegistrarAccess;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -57,6 +62,11 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'auth.isAdmin' => AdminAccess::class,
+        'auth.isBursar' => BursarAccess::class,
+        'auth.Chief' => ChiefAccountantAccess::class,
+        'auth.isClerk' => ClerkAccess::class,
+        'auth.isRegistrar' => RegistrarAccess::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,

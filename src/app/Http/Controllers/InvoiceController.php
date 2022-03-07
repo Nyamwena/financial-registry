@@ -48,18 +48,27 @@ class InvoiceController extends Controller
 
     public function post_process_invoice(Request $request){
         try {
+
+           // dd($request->input('fl_remittance_amount'));
+            $check_if_amount = InvoiceHeader::where(['fl_invoice_number'=> $request->input('fl_invoice_number')])
+                ->pluck('fl_amount_due')->first();
+            $check_amount_paid = RemittanceDetail::where(['fl_invoice_number'=> $request->input('fl_invoice_number')])
+                ->pluck('fl_remittance_line_num')->first();
+            $amount_total = $check_if_amount + $check_amount_paid;
+           // dd($check_if_amount);
+            //if 200 >= 2000
             DB::beginTransaction();
                     $remittance_hdr = Remittance::create($request->except(['_token']));
-
-
                      $remittance_hdr->invoice_details()->create([
                          'fl_invoice_number' => $request->input('fl_invoice_number'),
                          'fl_customer_number' => $request->input('fl_consumer_account'),
                          'fl_remittance_line_amount' => $request->input('fl_remittance_amount')
                      ]);
-                     InvoiceHeader::where(['fl_invoice_number'=> $request->input('fl_invoice_number')])
-                                        ->update(['fl_closed'=>1]);
 
+                     if( $request->input('fl_remittance_amount') >=  $amount_total  ){
+                         InvoiceHeader::where(['fl_invoice_number'=> $request->input('fl_invoice_number')])
+                             ->update(['fl_closed'=>1]);
+                     }
             DB::commit();
            // dd($remittance_hdr->getKey('fl_remittance_num'));
             return redirect()->to('invoice/generate/receipt/'.$remittance_hdr->getKey('fl_remittance_num'));

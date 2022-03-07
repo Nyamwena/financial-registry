@@ -128,9 +128,13 @@
                                 </td>
                                 <td class="border-b w-5">
                                     <div class="flex sm:justify-center items-center">
-                                        <a class="flex items-center mr-3 edit" href="#" data-toggle="modal" data-target="#open-close-modal"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i> Open/close </a>
+                                        <a class="flex items-center text-red-700 mr-3 edit" href="#" data-toggle="modal" data-target="#open-close-modal"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i>
+                                            Open/close
+                                        </a>
                                         <br>
-                                        <a class="flex items-center mr-3" href="#" data-toggle="modal" data-target="#add-period-modal"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i> Add Period Details </a>
+                                        <a class="flex items-center mr-3" href="{{route('account-period.range-view', $period->fl_period_code)}}" > <i data-feather="check-square" class="w-4 h-4 mr-1"></i>
+                                            View Account Period Details
+                                        </a>
 
                                     </div>
                                 </td>

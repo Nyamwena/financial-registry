@@ -27,6 +27,16 @@ class AccountPeriodController extends Controller
         return view('account_period.add', compact('account_period'));
     }
 
+    public function account_range_view($period_code){
+        try {
+            $period_det = AccountPeriodDetail::where(['fl_period_code' => $period_code])->get();
+
+            return view('account_period.view_ranges', compact('period_det'));
+        }catch (\Exception $exception){
+            return redirect()->back()->with('toast_error', $exception->getMessage());
+        }
+    }
+
     //save account period
     public function create(Request $request)
     {

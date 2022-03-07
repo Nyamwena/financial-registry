@@ -150,7 +150,7 @@
                 <li>
                     <a href="{{route('invoice-billing.bill-one')}}" class="side-menu @if(Request::routeIs('invoice-billing.bill-one')) side-menu--active @endif">
                         <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
-                        <div class="side-menu__title">Billing Customer</div>
+                        <div class="side-menu__title">Customer Billing</div>
                     </a>
                 </li>
                 <li>
@@ -180,10 +180,45 @@
             </ul>
         </li>
 
+        <li class="side-nav__devider my-6"></li>
+        <li>
+            <a href="javascript:;" class="side-menu @if(Request::is('clients/*')) side-menu--active @endif">
+                <div class="side-menu__icon"> <i data-feather="inbox"></i> </div>
+                <div class="side-menu__title">Clients<i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a href="{{route('customer-add.index')}}" class="side-menu @if(Request::routeIs('customer-add.index')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
+                        <div class="side-menu__title"> Add Customer</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('payment-plan.index')}}" class="side-menu @if(Request::routeIs('payment-plan.index')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
+                        <div class="side-menu__title"> Payment Plan</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('payment-plan.recommend')}}" class="side-menu @if(Request::routeIs('payment-plan.recommend')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
+                        <div class="side-menu__title">Recommend Payment Plan</div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('payment-plan.approve')}}" class="side-menu @if(Request::routeIs('payment-plan.approve')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
+                        <div class="side-menu__title">Approve Payment Plan</div>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
 
         <li class="side-nav__devider my-6"></li>
         <li>
-            <a href="javascript:;" class="side-menu @if(Request::is('age-analysis/*')) side-menu--active @endif">
+            <a href="javascript:;" class="side-menu @if(Request::is('reports/*')) side-menu--active @endif">
                 <div class="side-menu__icon"> <i data-feather="inbox"></i> </div>
                 <div class="side-menu__title">Reports<i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
             </a>
@@ -192,6 +227,13 @@
                     <a href="{{route('age-analysis.index')}}" class="side-menu @if(Request::routeIs('age-analysis.index')) side-menu--active @endif">
                         <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
                         <div class="side-menu__title"> Age Analysis</div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('sales-report.all')}}" class="side-menu @if(Request::routeIs('sales-report.all')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
+                        <div class="side-menu__title"> Sales</div>
                     </a>
                 </li>
 

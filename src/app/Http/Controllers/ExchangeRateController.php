@@ -11,12 +11,8 @@ class ExchangeRateController extends Controller
 {
 
     public function index(){
-        $exchange_rate = ExchangeRate::with('currency')->get();
-
-//        select('*')
-//                            ->join('tbl_currency','tbl_currency.fl_currency_code','=','tbl_exchange.fl_currency_code')
-//                            //->join('tbl_currency','tbl_currency.fl_currency_code','=','tbl_exchange.fl_currency_code_dest')
-//                            ->get();
+        $exchange_rate = ExchangeRate::with('currency_dest','currency_base')->get();
+           // dd($exchange_rate);
 
 
         $currencies = Currency::all()->where('fl_active','=',1);
