@@ -93,20 +93,11 @@
                         {{$account_types->fl_account_range_z}}
                     </td>
 
-                    {{--                        <td class=" border-b">--}}
-                    {{--                            @if($$account_types->fl_paymethod_active == 1)--}}
-                    {{--                                Yes--}}
-                    {{--                            @elseif($$account_types->fl_paymethod_active == 0)--}}
-                    {{--                                No--}}
-                    {{--                            @endif--}}
-
-                    {{--                        </td>--}}
 
 
                     <td class="border-b w-5">
                         <div class="flex sm:justify-center items-center">
-                            <a class="flex items-center mr-3 edit" href="#" data-toggle="modal"
-                               data-target="#edit_currency"> <i data-feather="check-square" class="w-4 h-4 mr-1"></i>
+                            <a class="flex items-center mr-3 edit" href="{{route('account-type.edit',$account_types->fl_acc_type_code)}}" > <i data-feather="check-square" class="w-4 h-4 mr-1"></i>
                                 Edit
                             </a>
                             <br>

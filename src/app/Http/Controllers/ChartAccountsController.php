@@ -54,13 +54,26 @@ class ChartAccountsController extends Controller
         $this->validate($request,[
             'fl_account_num' => 'unique:tbl_chart'
         ]);
+        $account = $request->input('fl_account_num');
         try {
 
+            $validate_accounts = AccountTypes::get();
 
-            DB::beginTransaction();
-            ChartAccounts::create($request->except(['_token']));
-            DB::commit();
-            return redirect()->back()->with('toast_success','Saved Successfully');
+            foreach ($validate_accounts as $range){
+                // 3000 >= db_value  && 7000 <= db_value ------->this check for range
+
+                if($account >= $range->fl_account_range_a && $account <= $range->fl_account_range_z ) {
+                    DB::beginTransaction();
+                    ChartAccounts::create($request->except(['_token']));
+                    DB::commit();
+
+                    return redirect()->back()->with('toast_success','Saved Successfully');
+
+                } else {
+                    return redirect()->back()->with('toast_warning','This account is not available in account types range');
+                }
+
+            }
         }catch (\Exception $exception){
             DB::rollback();
 

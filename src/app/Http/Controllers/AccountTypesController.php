@@ -106,7 +106,12 @@ class AccountTypesController extends Controller
      */
     public function edit($id)
     {
-        //
+        try {
+            $account_type = AccountTypes::all()->where('fl_acc_type_code','=',$id)->first();
+            return view('account_types.edit', compact('account_type'));
+        } catch (\Exception $exception){
+            return redirect()->back()->with('toast_error',  $exception->getMessage());
+        }
     }
 
     /**
@@ -118,7 +123,42 @@ class AccountTypesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'fl_account_type_name' => 'required|min:3',
+            'fl_account_range_a' => 'required_with:fl_account_range_z',
+            'fl_account_range_z' => 'required_with:fl_account_range_a|integer|gt:fl_account_range_a'
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+        }
+
+        $range_a = $request->input('fl_account_range_a');
+        $range_z = $request->input('fl_account_range_z');
+        try {
+            DB::beginTransaction();
+            $check_range = AccountTypes::where('fl_acc_type_code', '=', !$id)->get();
+            //->pluck('fl_account_range_a');
+            //$check_range_z = AccountTypes::all()->pluck('fl_account_range_z');
+
+            // dd($check_range);
+            foreach ($check_range as $range){
+                // 3000 >= db_value  && 7000 <= db_value ------->this check for range
+
+                if($range_a >= $range->fl_account_range_a && $range_z <= $range->fl_account_range_z ) {
+                    // dump($range->fl_account_range_a . '_' . $range->fl_account_range_z);
+                    return redirect()->back()->with('toast_error','The range is all ready been defined!!');
+                }
+
+            }
+
+            $account_type = AccountTypes::where('fl_acc_type_code','=',$id);
+            $account_type->update($request->except(['_token', '_method']));
+            DB::commit();
+            return redirect('account/account-type')->withSuccess('Updated Successfully');
+        }catch (\Exception $exception){
+            return redirect()->back()->with('toast_error',  $exception->getMessage());
+        }
     }
 
     /**

@@ -40,6 +40,11 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('institute')->middleware(['auth'])->name('institute.')->group(function (){
     Route::get('/', [InstituteController::class,'index'])->name('index');
     Route::post('/institute',[InstituteController::class,'store'])->name('store');
+    Route::get('/edit/{fl_system_code}', [InstituteController::class,'edit'])->name('edit');
+    Route::put('/update/{fl_system_code}', [InstituteController::class,'update'])->name('update');
+
+   // Route::resource('/ini', InstituteController::class);
+
 });
 
 Route::prefix('clients')->middleware(['auth'])->name('payment-plan.')->group(function (){
@@ -67,6 +72,10 @@ Route::prefix('account')->middleware(['auth'])->name('account-period.')->group(f
 Route::prefix('account')->middleware(['auth'])->name('account-type.')->group(function (){
     Route::get('/account-type', [AccountTypesController::class,'index'])->name('index');
     Route::post('/account-type/store', [AccountTypesController::class,'store'])->name('store');
+    Route::get('/account-type/{fl_acc_type_code}', [AccountTypesController::class,'edit'])->name('edit');
+
+    Route::put('/account-type/update/{fl_acc_type_code}', [AccountTypesController::class,'update'])->name('update');
+
 });
 
 

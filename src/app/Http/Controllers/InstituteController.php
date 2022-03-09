@@ -70,7 +70,13 @@ class InstituteController extends Controller
      */
     public function edit($id)
     {
-        //
+        try {
+            $institution = Institute::all()->where('fl_system_code','=', $id)->first();
+            return view('institute.edit', compact('institution'));
+        }catch (\Exception $exception){
+            return  redirect()->back()->with('toast_error', $exception);
+        }
+
     }
 
     /**
@@ -82,7 +88,15 @@ class InstituteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $institute = Institute::where('fl_system_code', $id);
+
+            $institute->update($request->except(['_token','_method','imageUpload']));
+
+            return redirect('/institute')->withSuccess('Updated Successfully');
+        }catch (\Exception $exception){
+            return redirect()->back()->with('toast_error', $exception->getMessage());
+        }
     }
 
     /**
