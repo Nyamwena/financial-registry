@@ -7,14 +7,15 @@
             <!-- BEGIN: Form Layout -->
 
             <div class="intro-y box p-8">
-                <form action="{{route('chart.store')}}" method="post">
+                <form action="{{route('chart.update',$chart->fl_account_num)}}" method="post">
                     @csrf
+                    @method('PUT')
                     <div class="">
                         <div class="grid grid-cols-12 gap-4 row-gap-5 mt-5">
 
                             <div class="intro-y col-span-12 sm:col-span-5">
                                 <div class="mb-2">Account Number</div>
-                                <input type="text" class="input w-full border flex-1" name="fl_account_num"  required>
+                                <input type="text" class="input w-full border flex-1" value="{{$chart->fl_account_num}}" name="fl_account_num"  required>
                                 @error('fl_account_num')
                                 <div class="mb-2 text-red-500"> {{$message}}</div>
                                 @enderror
@@ -22,7 +23,7 @@
                             </div>
                             <div class="intro-y col-span-12 sm:col-span-5">
                                 <div class="mb-2">Account Name</div>
-                                <input type="text" class="input w-full border flex-1" placeholder=" " name="fl_account_name"  required>
+                                <input type="text" class="input w-full border flex-1" value="{{$chart->fl_account_name}}" name="fl_account_name"  required>
                                 @error('fl_account_name')
                                 <div class="mb-2 text-red-500"> {{$message}}</div>
                                 @enderror
@@ -158,7 +159,7 @@
 
                             <td class="border-b w-5">
                                 <div class="flex sm:justify-center items-center">
-                                    <a class="flex items-center mr-3 edit" href="{{route('chart.edit',$chart_account->fl_account_num)}}" > <i data-feather="check-square" class="w-4 h-4 mr-1"></i>
+                                    <a class="flex items-center mr-3 edit" href="{{$chart_account->fl_account_num}}" > <i data-feather="check-square" class="w-4 h-4 mr-1"></i>
                                         Edit
                                     </a>
                                     <br>

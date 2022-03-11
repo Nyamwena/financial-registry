@@ -84,6 +84,9 @@ Route::prefix('account')->middleware(['auth'])->name('chart.')->group(function (
     Route::get('/chart', [ChartAccountsController::class,'index'])->name('index');
     Route::post('/chart/store', [ChartAccountsController::class,'store'])->name('store');
 
+    Route::get('/chart/edit/{fl_account_num}', [ChartAccountsController::class,'edit'])->name('edit');
+    Route::put('/chart/update/{fl_account_num}', [ChartAccountsController::class,'update'])->name('update');
+
     Route::get('/responsibility/centre', [ResponsibilityCentreController::class,'index'])->name('payment-method-index');
     Route::post('/responsibility/centre/store', [ResponsibilityCentreController::class,'create_centre'])->name('responsibility-centre-store');
 });

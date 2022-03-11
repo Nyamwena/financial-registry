@@ -95,24 +95,46 @@ class ChartAccountsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        //
+        try {
+            $account_type = AccountTypes::all();
+
+            $chart_accounts= ChartAccounts::with('account_type_main',
+                'account_type_a','account_type_b')
+                ->get();
+
+            // dd($chart_accounts->fl_account_num);
+            $account_main = AccountMainType::all();
+            $chart = ChartAccounts::where('fl_account_num', $id)->first();
+            return  view('chart_accounts.edit', compact('chart','chart_accounts','account_type','account_main'));
+        }catch (\Exception $exception){
+            return redirect()->back()->with('toast_error',  $exception->getMessage());
+        }
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  string  $account_num
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, string $account_num)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $chart = ChartAccounts::where('fl_account_num', $account_num);
+            $chart->update($request->except(['_token','_method']));
+            DB::commit();
+            return redirect()->to('account/chart')->with('toast_success', 'Saved Successfully');
+        }catch (\Exception $exception){
+            DB::rollBack();
+            return redirect()->back()->with('toast_error',  $exception->getMessage());
+        }
     }
 
     /**
