@@ -36,6 +36,7 @@ class FeesGroupController extends Controller
             $minor_code1 = $request->input('fl_minor_code1',[]);
             $minor_code2 = $request->input('fl_minor_code2');
             $term_code = $request->input('fl_term_code');
+            $description = $request->input('fl_description');
 
            // dd($minor_code2);
         try {
@@ -43,6 +44,7 @@ class FeesGroupController extends Controller
                 DB::beginTransaction();
             foreach ($minor_code1 as $index=>$fees){
                 $fees_group [] = [
+                    'fl_description' => $description,
                     'fl_major_code1' => $major_code,
                     'fl_minor_code1' => $minor_code1[$index],
                     'fl_minor_code2' => $minor_code2,

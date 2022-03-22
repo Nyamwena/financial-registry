@@ -43,8 +43,8 @@
                     <div class="dropdown-box__content box bg-theme-38 text-white">
                         <div class="p-4 border-b border-theme-40">
                             <div class="font-medium">
-                                John Doe
-{{--                                {{Auth::user()->name}}--}}
+
+                                {{Auth::user()->name}}
 
                             </div>
 

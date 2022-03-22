@@ -27,7 +27,13 @@ class InvoiceBillingController extends Controller
 
         $customers = Customer::all();
         $services = Services::all();
-        return view('billing.bill', compact('customers','services'));
+        $invoice_prefix = InvoiceNumberGenerator::get()->pluck('fl_prefix')->first();
+        $invoice_increment = InvoiceNumberGenerator::get()->pluck('fl_generator')->first();
+
+        $generator = $invoice_prefix . $invoice_increment + 1;
+        $service_date = Carbon::now()->format('m/d/Y');
+      //  dd($generator);
+        return view('billing.bill', compact('customers','services','generator','service_date','invoice_increment'));
     }
 
     public  function bill_one_store(Request $request){
@@ -35,6 +41,7 @@ class InvoiceBillingController extends Controller
         $invoice_number = $request->input('fl_invoice_number');
         $service = $request->input('fl_service_code');
         $unit_price = $request->input('fl_amount_due');
+        $generator = $request->input('gen');
         $request->validate(
             [
                 'fl_invoice_number' => "unique:tbl_invoice_hdr",
@@ -43,6 +50,8 @@ class InvoiceBillingController extends Controller
         );
 
         try {
+            $invoice_generator = $generator + 1;
+            $id = InvoiceNumberGenerator::all()->pluck('id')->first();
             $invoice_header = InvoiceHeader::create($request->except(['_token']));
             if($invoice_header){
                 $invoice_detail = new InvoiceDetail();
@@ -50,6 +59,8 @@ class InvoiceBillingController extends Controller
                 $invoice_detail->fl_service_code = $service;
                 $invoice_detail->fl_unit_price = $unit_price;
                 $invoice_detail->save();
+                InvoiceNumberGenerator::where('id',$id)
+                    ->update(['fl_generator'=>$invoice_generator]);
             }
             return redirect()->back()->withSuccess('Record saved successfully');
         }catch (\Exception $exception){

@@ -126,11 +126,11 @@
 
                     <div class="col-span-12 sm:col-span-6">
                         <label for=""> Due Date</label>
-                        <input type="date"  class="input w-full border flex-1"  name="fl_due_date">
+                        <input type="date"  class="input w-full border flex-1"  name="fl_due_date" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
                     </div>
                     <div class="col-span-12 sm:col-span-6">
                         <label for=""> Service Date</label>
-                        <input type="date"  class="input w-full border flex-1"  name="fl_service_date">
+                        <input type="date"  class="input w-full border flex-1"  name="fl_service_date" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
                     </div>
 
                     <div class="col-span-12 sm:col-span-6" >

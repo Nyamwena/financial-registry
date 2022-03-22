@@ -25,6 +25,7 @@ return new class extends Migration
 
             $table->foreign('fl_currency_code')->references('fl_currency_code')->on('tbl_currency')->onDelete('cascade');
            $table->foreign('fl_currency_code_dest')->references('fl_currency_code')->on('tbl_currency')->onDelete('cascade');
+            $table->unique(['fl_currency_code','fl_currency_code_dest'],'fl_code');
         });
     }
 

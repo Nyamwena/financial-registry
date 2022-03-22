@@ -183,13 +183,13 @@ Route::prefix('fees-statement')->middleware(['auth'])->name('fees-report.')->gro
     Route::get('/{account_number}', [FeesStatementController::class,'get_fees_statement'])->name('get-statement');
 });
 
-Route::prefix('report')->middleware(['auth'])->name('age-analysis.')->group(function (){
+Route::prefix('reports')->middleware(['auth'])->name('age-analysis.')->group(function (){
     Route::get('/age-analysis', [AgeAnalysisController::class,'index'])->name('index');
 });
-Route::prefix('report')->middleware(['auth'])->name('sales-report.')->group(function (){
+Route::prefix('reports')->middleware(['auth'])->name('sales-report.')->group(function (){
     Route::get('/sales/all', [SalesReportController::class,'sales_report'])->name('all');
     Route::get('/sales/daily', [SalesReportController::class,'sales_report_daily'])->name('daily');
-    Route::get('/sales/date-range', [SalesReportController::class,'sales_report_date_range'])->name('range');
+    Route::post('/sales/date-range', [SalesReportController::class,'sales_report_date_range'])->name('range');
 });
 
 

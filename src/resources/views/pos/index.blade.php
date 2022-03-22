@@ -45,7 +45,7 @@
                                     </div>
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <div class="mb-2">Remittance Amount</div>
-                                        <input type="number" class="input w-full border flex-1" placeholder=" " name="fl_remittance_amount"   required>
+                                        <input type="number" class="input w-full border flex-1" placeholder=" " name="fl_remittance_amount" step="0.01"   required>
                                         <span id="error_code"></span>
                                     </div>
                                     <div class="intro-y col-span-12 sm:col-span-6">
@@ -55,13 +55,13 @@
                                     </div>
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <div class="mb-2">Remittance Date</div>
-                                        <input type="date" class="input w-full border flex-1" placeholder=" " name="fl_remittance_date"  required>
+                                        <input type="date" class="input w-full border flex-1" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" name="fl_remittance_date"  required>
                                         <span id="error_code"></span>
                                     </div>
 
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <div class="mb-2">Value Date</div>
-                                        <input type="date" class="input w-full border flex-1" placeholder=" " name="fl_value_date"  required>
+                                        <input type="date" class="input w-full border flex-1" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" name="fl_value_date"  required>
                                         <span id="error_code"></span>
                                     </div>
 

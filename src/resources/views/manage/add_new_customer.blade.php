@@ -34,23 +34,25 @@
                                 <span id="error_code"></span>
                             </div>
                             <div class="intro-y col-span-12 sm:col-span-4">
-                                <div class="mb-2">Lastname</div>
-                                <input type="text" class="input w-full border flex-1" placeholder=" " name="fl_lastname"  required>
-                                <span id="error_code"></span>
-                            </div>
-                            <div class="intro-y col-span-12 sm:col-span-4">
                                 <div class="mb-2">Middle Name</div>
                                 <input type="text" class="input w-full border flex-1" placeholder=" " name="fl_middle_name"  >
                                 <span id="error_code"></span>
                             </div>
+                            <div class="intro-y col-span-12 sm:col-span-4">
+                                <div class="mb-2">Lastname</div>
+                                <input type="text" class="input w-full border flex-1" placeholder=" " name="fl_lastname"  required>
+                                <span id="error_code"></span>
+                            </div>
+
 
                             <div class="intro-y col-span-12 sm:col-span-4">
                                 <div class="mb-2">Title</div>
                                 <select name="fl_title" class="input w-full border flex-1"  id="">
-                                    <option value="m">Mr</option>
-                                    <option value="mi">Mrs</option>
-                                    <option value="mm">Miss</option>
-                                    <option value="j">Dr</option>
+                                    <option value="Mr">Mr</option>
+                                    <option value="Mrs">Mrs</option>
+                                    <option value="Miss">Miss</option>
+                                    <option value="Ms">Ms</option>
+                                    <option value="Dr">Dr</option>
 
                                 </select>
                                 <span id="error_code"></span>

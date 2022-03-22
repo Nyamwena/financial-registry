@@ -39,14 +39,16 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <div class="mb-2">Customer Account</div>
-                                        <input type="text" id="customer_account" class="input w-full border flex-1" placeholder=""  name="fl_practitioner_code" readonly>
+                                        <input type="text" id="customer_account" class="input w-full border flex-1" placeholder=""   name="fl_practitioner_code" readonly>
                                         <span id="error_code"></span>
 
                                     </div>
 
+                                    <input type="hidden" name="gen" value="{{$invoice_increment}}">
+
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <div class="mb-2">Invoice Number</div>
-                                        <input type="text" id="" class="input w-full border flex-1" placeholder=""  name="fl_invoice_number" >
+                                        <input type="text" id="" class="input w-full border flex-1" placeholder=""  name="fl_invoice_number" value="{{$generator}}" readonly>
                                         @error('fl_invoice_number')
                                         <div class="mb-2 text-red-50"> {{$message}}</div>
                                         @enderror
@@ -55,23 +57,23 @@
 
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <div class="mb-2">Invoice Service Date</div>
-                                        <input type="date" class="input w-full border flex-1" id="fl_service_date" placeholder=" " name="fl_service_date"   required>
+                                        <input type="date" class="input w-full border flex-1" id="fl_service_date" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" name="fl_service_date"   required>
                                         <span id="error_code"></span>
                                     </div>
                                     <div class="intro-y col-span-12 sm:col-span-6">
-                                        <div class="mb-2">Invoice Due Date</div>
-                                        <input type="date" class="input w-full border flex-1" placeholder=" " name="fl_due_date"  required>
+                                        <label class="mb-2" for="due_date">Invoice Due Date</label>
+                                        <input type="date" class="input w-full border flex-1" id="due_date" value="{{Carbon\Carbon::now()->format('Y-m-d')}}"  name="fl_due_date"  required>
                                         <span id="error_code"></span>
                                     </div>
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <div class="mb-2">Invoice Date</div>
-                                        <input type="date" class="input w-full border flex-1" placeholder=" " name="fl_invoice_date"  required>
+                                        <input type="date" class="input w-full border flex-1" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" name="fl_invoice_date"  required>
                                         <span id="error_code"></span>
                                     </div>
 
                                     <div class="intro-y col-span-12 sm:col-span-6">
                                         <div class="mb-2">Amount Due</div>
-                                        <input type="number" class="input w-full border flex-1" placeholder=" " name="fl_amount_due"  required>
+                                        <input type="number" class="input w-full border flex-1" placeholder=" " name="fl_amount_due" step="0.01"  required>
                                         <span id="error_code"></span>
                                     </div>
 

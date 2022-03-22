@@ -44,7 +44,7 @@
             </div>
             <div class="mt-10 lg:mt-0 lg:ml-auto lg:text-right">
                 <div class="text-base text-gray-600">Date</div>
-                <div class="mt-1">{{" "}}</div>
+                <div class="mt-1">{{Carbon\Carbon::now()->format('Y-m-d')}}</div>
             </div>
         </div>
         <div class="px-5 sm:px-16 py-10 sm:py-20">
@@ -52,44 +52,43 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th class="border-b-2 whitespace-no-wrap">DESCRIPTION</th>
-                        <th class="border-b-2 text-right whitespace-no-wrap">Dr</th>
-                        <th class="border-b-2 text-right whitespace-no-wrap">Cr</th>
+                        <th class="border-b-2 ">Transaction Date</th>
+                        <th class="border-b-2 ">DESCRIPTION</th>
+                        <th class="border-b-2 ">Dr</th>
+                        <th class="border-b-2 ">Cr</th>
+                        <th class="border-b-2 ">Running Balance</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($remittance as $row)
+                    <div style="display: none">
+                        {{$running_balance = 0}}
+                    </div>
+                    @foreach($fees_statement as $row)
                     <tr>
-                        <td class="border-b">
-                            <div class="font-medium whitespace-no-wrap">
-                                {{'payment'}}
+                        <td class="border-b w-32">
+                            {{$row->trans_date}}
+                        </td>
+                        <td class="border-b w-32">
+                            <div >
+                                @if($row->service_name == null)
+                                    {{'Payment'}}
+                                @else
+                                    {{$row->service_name}}
+                                @endif
                             </div>
                         </td>
-                        <td class="text-right border-b w-32">
-                            {{$row->fl_remittance_amount}}
+                        <td class="border-b w-32">
+                            {{round($row->balance,2)}}
                         </td>
-                        <td class="text-right border-b w-32">
-                            {{"-"}}
+                        <td class="border-b w-32">
+                            {{round($row->fees_paid,2)}}
+                        </td>
+
+                        <td class="border-b w-32">
+                            {{ round($running_balance =  $row->balance - $row->fees_paid,2)}}
                         </td>
 
                     </tr>
-                    @endforeach
-
-                    @foreach($invoice as $row)
-                        <tr>
-                            <td class="border-b">
-                                <div class="font-medium whitespace-no-wrap">
-                                    {{$row->fl_invoice_number}}
-                                </div>
-                            </td>
-                            <td class="text-right border-b w-32">
-                                {{"-"}}
-                            </td>
-                            <td class="text-right border-b w-32">
-                                {{$row->fl_amount_due}}
-                            </td>
-
-                        </tr>
                     @endforeach
 
                     </tbody>
@@ -105,7 +104,7 @@
 {{--            </div>--}}
             <div class="text-center sm:text-right sm:ml-auto">
                 <div class="text-base text-gray-600">Balance</div>
-                <div class="text-xl text-theme-1 font-medium mt-2">{{$balance}}</div>
+                <div class="text-xl text-theme-1 font-medium mt-2">{{round($balance,2)}}</div>
             </div>
         </div>
     </div>

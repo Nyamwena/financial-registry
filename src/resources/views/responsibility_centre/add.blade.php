@@ -213,7 +213,7 @@
 
                     <div class="intro-y col-span-12 sm:col-span-12">
                         <div class="mb-2">Responsible Centre</div>
-                        <select name="fl_centre_code" data-placeholder="Select Currency" class="select2 w-full" id="" required>
+                        <select name="fl_centre_code" data-placeholder="Select Responsible Centre" class="select2 w-full" id="" required>
                             <option value="">----pick account number--- </option>
                             @foreach( $centres as $row)
                                 <option value="{{$row->fl_centre_code}}">{{$row->fl_centre_name}} </option>
@@ -224,7 +224,7 @@
 
                     <div class="intro-y col-span-12 sm:col-span-12">
                         <div class="mb-2">Accounting Period</div>
-                        <select name="fl_period_code" data-placeholder="Select Currency" class=" select2 w-full" id="" required>
+                        <select name="fl_period_code" data-placeholder="Select Account Period" class=" select2 w-full" id="" required>
                             @foreach( $period_code as $code)
                                 <option value="{{$code->fl_period_code}}" >{{$code->fl_period_name}}  </option>
                             @endforeach

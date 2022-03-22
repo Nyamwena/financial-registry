@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\FeesStatement;
 use App\Models\Institute;
 use App\Models\InvoiceHeader;
 use App\Models\Remittance;
@@ -23,29 +24,21 @@ class FeesStatementController extends Controller
     {
 
         try {
-            $balance  = null;
-            $invoice_amount = InvoiceHeader::with('invoice_details')
-                ->where('fl_practitioner_code','=', $customer_account)
-                ->pluck('fl_amount_due')
-                ->sum();
 
-            $remittance_amount = Remittance::with('remittance_detail')
-                ->where('fl_consumer_account','=' , $customer_account)
-                ->pluck('fl_remittance_amount')
-                ->sum();
+            $fees_statement = FeesStatement::where('customer_account', $customer_account)->orderBy('trans_date', 'ASC')
+                            ->get();
 
-            $balance = $invoice_amount - $remittance_amount ;
+            $pluck_paid = FeesStatement::where('customer_account', $customer_account)->pluck('fees_paid')->sum();
+            $pluck_owing =  FeesStatement::where('customer_account', $customer_account)->pluck('balance')->sum();
 
-            $invoice = InvoiceHeader::with('invoice_details')
-                ->where('fl_practitioner_code','=', $customer_account)
-                ->get();
-            $remittance = Remittance::with('remittance_detail')
-                ->where('fl_consumer_account','=' , $customer_account)
-                ->get();
+            //balance = fees_owing - fees_paid
+
+            $balance  =  $pluck_owing - $pluck_paid;
+          // dd( $pluck_owing .'-'. $pluck_paid . '='.  $balance);
+
             $institute = Institute::all()->first();
             $client_details = Customer::where('fl_consumer_account', $customer_account)->first();
-            return view('reports.fees_statement', compact('remittance_amount','invoice_amount',
-                                                'invoice','remittance_amount','remittance','balance','institute','client_details'));
+            return view('reports.fees_statement', compact('fees_statement','balance','institute','client_details'));
         }catch (\Exception $exception){
             return redirect()->back()->with('toast_error', $exception->getMessage());
         }

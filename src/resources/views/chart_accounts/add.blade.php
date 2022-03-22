@@ -139,10 +139,11 @@
                             </td>
 
                             <td class=" border-b">
-                                @if($chart_account->account_type_b->fl_account_type_name == '')
-                                    {{"-"}}
-                                @else
+                                @if($chart_account->account_type_b)
                                     {{$chart_account->account_type_b->fl_account_type_name}}
+
+                                @else
+                                    {{"-"}}
                                 @endif
 
                             </td>

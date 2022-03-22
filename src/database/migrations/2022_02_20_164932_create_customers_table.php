@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('fl_middle_name', length: 30)->nullable();
             $table->string('fl_title', length: 10)->nullable();
             $table->string('fl_sex', length: 10)->nullable();
-            $table->string('fl_physical_address', length: 100);
+            $table->string('fl_physical_address', length: 100)->nullable();
             $table->string('fl_mailing_address', length: 100)->nullable();
             $table->string('fl_city', length: 50)->nullable();
             $table->string('fl_email', length: 50)->nullable();

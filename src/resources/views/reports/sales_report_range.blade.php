@@ -22,7 +22,7 @@
                                  </a>
                             </span>
                             <span class="text-sm px-2">
-                                <a href="javascript:;" data-toggle="modal" data-target="#header-footer-modal-preview"  class="button justify-center block bg-theme-1 text-white ml-2 w-auto">
+                                <a href="javascript:;"  data-toggle="modal" data-target="#header-footer-modal-preview" class="button justify-center block bg-theme-1 text-white ml-2 w-auto">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>
@@ -77,37 +77,6 @@
             </div>
         </div>
 
-    </div>
-
-    <div class="modal" id="header-footer-modal-preview">
-        <div class="modal__content modal__content p-10 text-center">
-            <form action="{{route('sales-report.range')}}" method="post" enctype="multipart/form-data">
-                @csrf
-
-                <div class="col-span-6 sm:col-span-6">
-                    <div class="flex items-center px-5 py-5 sm:py-3 border-b border-gray-200">
-                        <h2 class="font-medium text-base mr-auto">Select Date Range</h2>
-                    </div>
-
-                    <div class="col-span-6 sm:col-span-6">
-                        <label for="">Start Date</label>
-                        <input type="date"  class="input w-full border flex-1"  name="date_a">
-                    </div>
-                    <div class="col-span-6 sm:col-span-6">
-                        <label for=""> End Date</label>
-                        <input type="date"  class="input w-full border flex-1"  name="date_z">
-                    </div>
-
-
-                </div>
-                <div class="px-5 py-3 text-right border-t border-gray-200">
-                    <button data-dismiss="modal" type="reset" class="button w-20 border text-gray-700 mr-1">Cancel</button>
-                    <button type="submit" class="button w-auto bg-theme-1 text-white">Generate Report</button>
-                </div>
-
-            </form>
-
-        </div>
     </div>
 
 @endsection

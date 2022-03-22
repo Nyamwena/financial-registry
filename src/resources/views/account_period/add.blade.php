@@ -94,8 +94,8 @@
                                         {{$period->fl_period_code}}
 
                                     </td>
-                                <td class=" border-b">
-                                    <div class="">{{$period->fl_period_name}}</div>
+                                <td class="border-b">
+                                    {{$period->fl_period_name}}
 
                                 </td>
                                 <td class=" border-b">
@@ -162,7 +162,7 @@
                         <div class="p-5 grid grid-cols-12 gap-4 row-gap-3">
                             <div class="col-span-12 sm:col-span-12">
                                 <div class="mb-2">Period Header Name</div>
-                                <select name="fl_period_code" class="input w-full border flex-1" id="" required>
+                                <select name="fl_period_code" class="intro-y input input--lg w-full box pr-10  text-blue-800 font-semibold" id="" required>
                                     <option value="">---Select period header---</option>
                                     @foreach($account_period as $period)
                                         <option value="{{$period->fl_period_code}}">{{$period->fl_period_name}}</option>
@@ -213,7 +213,9 @@
                 <form action="{{route('account-period.close-open')}}" id="form-period-detail" method="post">
                     @csrf
                     <div class="">
+                        <input type="text" class="intro-y input input--lg w-full box pr-10  text-red-700 font-semibold"  id="period_name">
                         <div class="p-5 grid grid-cols-12 gap-4 row-gap-3">
+
                             <div class="col-span-12 sm:col-span-12">
                                 <div class="mb-2">Close/Open Account Period</div>
                                 <select name="fl_closed" class="input w-full border flex-1" id="" required>
@@ -255,6 +257,7 @@
                 console.log(data);
 
                 $('#period_code_fl').val(data[0]);
+                $('#period_name').val("Account Period Name Selected: " + data[1]);
 
 
                 $('#form-period-detail').attr('action', 'account-period/close-open/period/'+data[0]);

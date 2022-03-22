@@ -58,10 +58,10 @@ class ChartAccountsController extends Controller
         try {
 
             $validate_accounts = AccountTypes::get();
+           // dd($validate_accounts);
 
             foreach ($validate_accounts as $range){
-                // 3000 >= db_value  && 7000 <= db_value ------->this check for range
-
+                // 3000 >= db_value  && 7000 <= db_value ------->this check for rang
                 if($account >= $range->fl_account_range_a && $account <= $range->fl_account_range_z ) {
                     DB::beginTransaction();
                     ChartAccounts::create($request->except(['_token']));
@@ -130,7 +130,7 @@ class ChartAccountsController extends Controller
             $chart = ChartAccounts::where('fl_account_num', $account_num);
             $chart->update($request->except(['_token','_method']));
             DB::commit();
-            return redirect()->to('account/chart')->with('toast_success', 'Saved Successfully');
+            return redirect()->to('account/chart')->with('toast_success', 'Updated Successfully');
         }catch (\Exception $exception){
             DB::rollBack();
             return redirect()->back()->with('toast_error',  $exception->getMessage());
