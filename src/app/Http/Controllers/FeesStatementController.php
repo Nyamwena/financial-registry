@@ -8,6 +8,7 @@ use App\Models\Institute;
 use App\Models\InvoiceHeader;
 use App\Models\Remittance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class FeesStatementController extends Controller
 {
@@ -25,11 +26,14 @@ class FeesStatementController extends Controller
 
         try {
 
-            $fees_statement = FeesStatement::where('customer_account', $customer_account)->orderBy('trans_date', 'ASC')
+            $fees_statement = FeesStatement::where(['customer_account' => $customer_account, 'company_id'=>Session::get('company_session_id')])
+                            ->orderBy('trans_date', 'ASC')
                             ->get();
 
-            $pluck_paid = FeesStatement::where('customer_account', $customer_account)->pluck('fees_paid')->sum();
-            $pluck_owing =  FeesStatement::where('customer_account', $customer_account)->pluck('balance')->sum();
+            $pluck_paid = FeesStatement::where(['customer_account'=> $customer_account, 'company_id'=>Session::get('company_session_id')])
+                                        ->pluck('fees_paid')->sum();
+            $pluck_owing =  FeesStatement::where(['customer_account' => $customer_account, 'company_id'=>Session::get('company_session_id')])
+                            ->pluck('balance')->sum();
 
             //balance = fees_owing - fees_paid
 

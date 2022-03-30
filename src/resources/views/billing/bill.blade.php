@@ -1,11 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-
     <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
-        <h2 class="text-lg font-medium mr-auto">
-           Billing
-        </h2>
         <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
             <a href="{{route('fees-report.index')}}"  class="button text-white bg-theme-1 shadow-md mr-2">
                 View Fees Statements
@@ -16,11 +12,6 @@
 
                     </span>
                 </button>
-                {{--                <div class="pos-dropdown__dropdown-box dropdown-box mt-10 absolute top-0 right-0 z-20">--}}
-                {{--                    <div class="dropdown-box__content box p-2">--}}
-                {{--                        <a href="" class="flex items-center block p-2 transition duration-300 ease-in-out bg-white hover:bg-gray-200 rounded-md"> <i data-feather="activity" class="w-4 h-4 mr-2"></i> <span class="truncate">Student</span> </a>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
             </div>
         </div>
     </div>
@@ -71,22 +62,18 @@
                                         <span id="error_code"></span>
                                     </div>
 
-                                    <div class="intro-y col-span-12 sm:col-span-6">
-                                        <div class="mb-2">Amount Due</div>
-                                        <input type="number" class="input w-full border flex-1" placeholder=" " name="fl_amount_due" step="0.01"  required>
-                                        <span id="error_code"></span>
-                                    </div>
-
-                                    <div class="intro-y col-span-12 sm:col-span-12">
-                                        <div class="mb-2">Service /Product</div>
-                                        <select name="fl_service_code" id="fl_service_code" class="input w-full border flex-1 select2" required>
-                                            <option value="" selected disabled> CHOOSE SERVICE</option>
-                                            @foreach($services as $service )
-                                                <option value="{{$service->fl_service_code}}">{{$service->fl_service_name}}</option>
-                                            @endforeach
+                                    <div class="col-span-6 sm:col-span-6">
+                                        <label for=""> Select Service to Bill</label>
+                                        <select name="fee_structure_service"   class="input w-full border flex-1 select2">
+                                            @isset($fees_structure)
+                                                @foreach($fees_structure as $fees)
+                                                    <option value="{{$fees->id}}">{{$fees->service->fl_service_name}} {{"("}} {{$fees->fl_amount}} {{")"}}</option>
+                                                @endforeach
+                                            @endisset
                                         </select>
                                     </div>
                                     <input type="hidden" name="fl_closed" value="0">
+                                    <input type="hidden" value="{{\Session::get('company_session_id')}}" name="fl_company_id">
 
                                     <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">
                                         <button type="reset" class="button w-24 justify-center block bg-red-200 text-gray-600">Reset</button>
@@ -118,7 +105,7 @@
                         </tr>
                         </thead>
                         <tbody >
-                        @foreach($customers as $customer)
+                        @foreach($students as $customer)
                             <tr class="cursor-pointer">
                                 <td class="edit">{{$customer->fl_consumer_account}}</td>
                                 <td class="edit">{{$customer->fl_firstname}}   {{$customer->fl_lastname}}</td>

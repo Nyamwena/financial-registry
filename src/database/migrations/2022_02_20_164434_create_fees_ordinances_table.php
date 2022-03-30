@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('fl_date_a');
             $table->date('fl_date_z');
             $table->boolean('fl_active');
+            $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
         });
     }

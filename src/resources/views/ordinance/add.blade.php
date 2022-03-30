@@ -18,17 +18,18 @@
                                 <span id="error_code"></span>
 
                             </div>
+                            <input type="hidden" value="{{\Session::get('company_session_id')}}" name="fl_company_id">
 
 
                             <div class="intro-y col-span-12 sm:col-span-6">
                                 <div class="mb-2">Date Effective</div>
-                                <input type="date" class="input w-full border flex-1" placeholder=""  name="fl_date_a" required>
+                                <input type="date" class="input w-full border flex-1" value="{{Carbon\Carbon::now()->format('Y-m-d')}}"  name="fl_date_a" required>
                                 <span id="error_code"></span>
 
                             </div>
                             <div class="intro-y col-span-12 sm:col-span-6">
                                 <div class="mb-2">Expiry Date</div>
-                                <input type="date" class="input w-full border flex-1" placeholder=""  name="fl_date_z" required>
+                                <input type="date" class="input w-full border flex-1" value="{{Carbon\Carbon::now()->format('Y-m-d')}}"  name="fl_date_z" required>
                                 <span id="error_code"></span>
 
                             </div>

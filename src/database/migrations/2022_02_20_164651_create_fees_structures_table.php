@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('fl_service_code');
             $table->unsignedBigInteger('fl_currency_code');
             $table->decimal('fl_amount',13,4);
+            $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
 
             $table->foreign('fl_feegroup_code')->references('fl_feegroup_code')->on('tbl_fees_group')->onDelete('cascade');

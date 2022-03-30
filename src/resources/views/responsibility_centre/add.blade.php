@@ -24,10 +24,11 @@
 
                             <div class="intro-y col-span-12 sm:col-span-12">
                                 <div class="mb-2">Centre Short Code</div>
-                                <input type="text" class="input w-full border flex-1" name="fl_centre_short_code"  required>
+                                <input type="text" class="input w-full border flex-1" value="{{$short_code_prefix. $short_code_generator + 1}}" name="fl_centre_short_code" readonly  required>
                                 <span id="error_code"></span>
 
                             </div>
+                            <input type="hidden" value="{{\Session::get('company_session_id')}}" name="fl_company_id">
 
                             <div class="intro-y col-span-12 sm:col-span-12">
                                 <div class="mb-2">Centre Name</div>
@@ -58,7 +59,7 @@
                     <caption class="text-2xl text-green-600">Responsibility Centre</caption>
                     <thead>
                     <tr>
-                        <th class="border-b-2 whitespace-no-wrap">Centre Code</th>
+
                         <th class="border-b-2 whitespace-no-wrap">Centre Shortcode</th>
                         <th class="border-b-2 whitespace-no-wrap">Centre name</th>
                         <th class="border-b-2  whitespace-no-wrap">ACTIONS</th>
@@ -70,10 +71,6 @@
                     @foreach($centres as $centre)
                         <tr>
 
-                            <td class=" border-b">
-                                {{--                                {{$rate->fl_currency_code->fl_exchange_bulletino}}--}}
-                                {{$centre->fl_centre_code}}
-                            </td>
                             <td class=" border-b">
                                 {{--                                {{$rate->fl_currency_name}} <br>--}}
                                 {{--                                {{$rate->fl_currency_code->fl_base_rate_amount}}--}}
@@ -179,6 +176,7 @@
 
                         </select>
                     </div>
+                    <input type="hidden" value="{{\Session::get('company_session_id')}}" name="fl_company_id">
 
                 </div>
                 <div class="px-5 py-3 text-right border-t border-gray-200">
@@ -202,7 +200,7 @@
 
                     <div class="intro-y col-span-12 sm:col-span-12">
                         <div class="mb-2">Service Name</div>
-                        <select name="fl_service_code" data-placeholder="Select Currency" class="select2 w-full" id="" required>
+                        <select name="fl_service_code" data-placeholder="Select Service Name" class="select2 w-full" id="" required>
                             <option value="">----pick service name--- </option>
                             @foreach($service  as $row)
                                 <option value="{{$row->fl_service_code}}">{{$row->fl_service_name}} </option>
@@ -210,7 +208,7 @@
 
                         </select>
                     </div>
-
+                    <input type="hidden" value="{{\Session::get('company_session_id')}}" name="fl_company_id">
                     <div class="intro-y col-span-12 sm:col-span-12">
                         <div class="mb-2">Responsible Centre</div>
                         <select name="fl_centre_code" data-placeholder="Select Responsible Centre" class="select2 w-full" id="" required>

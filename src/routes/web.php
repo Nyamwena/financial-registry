@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountPeriodController;
 use App\Http\Controllers\AccountTypesController;
 use App\Http\Controllers\AgeAnalysisController;
 use App\Http\Controllers\ChartAccountsController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ExchangeRateController;
@@ -170,9 +171,16 @@ Route::prefix('clients')->middleware(['auth'])->name('customer-add.')->group(fun
 Route::prefix('customer-billing')->middleware(['auth'])->name('invoice-billing.')->group(function (){
     Route::get('/', [InvoiceBillingController::class,'create_billing'])->name('index');
     Route::post('/fees_group', [InvoiceBillingController::class,'get_customers'])->name('get-customers');
-    Route::get('/bill-one',[InvoiceBillingController::class,'bill_one'])->name('bill-one');
+    Route::get('/bill-one/selected_group/{group_code}',[InvoiceBillingController::class,'bill_one'])->name('bill-one');
+    Route::get('/select_group',[InvoiceBillingController::class,'select_group'])->name('select-group');
     Route::post('/bill-one/store',[InvoiceBillingController::class,'bill_one_store'])->name('bill-one-store');
     Route::post('/fees_group/bulk/billing', [InvoiceBillingController::class,'bulk_billing'])->name('bulk-billing');
+});
+
+Route::prefix('/')->middleware(['auth'])->name('select-company.')->group(function (){
+    Route::get('/', [CompanyController::class,'index'])->name('index');
+    Route::post('/company_session',[CompanyController::class,'get_company_session'])->name('get_session');
+
 });
 
 
@@ -190,6 +198,7 @@ Route::prefix('reports')->middleware(['auth'])->name('sales-report.')->group(fun
     Route::get('/sales/all', [SalesReportController::class,'sales_report'])->name('all');
     Route::get('/sales/daily', [SalesReportController::class,'sales_report_daily'])->name('daily');
     Route::post('/sales/date-range', [SalesReportController::class,'sales_report_date_range'])->name('range');
+    Route::post('/sales/payment-type', [SalesReportController::class,'sales_report_payment_type'])->name('payment_type');
 });
 
 
@@ -217,7 +226,7 @@ Route::prefix('inventory-service')->middleware(['auth'])->name('inventory-servic
 
 
 //Auth::routes();
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard')->middleware('auth');
 Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function() {
     Route::get('/view', [App\Http\Controllers\Admin\CreateUsersController::class,'index'])->name('index');
     Route::post('/createuser', [App\Http\Controllers\Admin\CreateUsersController::class,'createUser'])->name('create.user');

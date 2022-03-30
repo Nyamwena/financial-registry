@@ -12,36 +12,224 @@ use App\Models\Services;
 use App\Models\U1AcademicSession;
 use App\Models\U1Department;
 use App\Models\U1ProgrammeOffer;
+use App\Models\U2IntakeType;
 use App\Models\U3StudentMember;
 use App\Models\U3StudentProgrammeStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class InvoiceBillingController extends Controller
 {
 
 
-    public function bill_one(){
+    public function select_group(){
+        try {
+            $fees_group = FeesGroup::all()->where('fl_company_id','=', Session::get('company_session_id'));
 
-        $customers = Customer::all();
-        $services = Services::all();
-        $invoice_prefix = InvoiceNumberGenerator::get()->pluck('fl_prefix')->first();
-        $invoice_increment = InvoiceNumberGenerator::get()->pluck('fl_generator')->first();
+            if($fees_group){
+                return view('billing.select_group', compact('fees_group'));
+            }else{
+                throw  new \Exception('Something went wrong');
 
-        $generator = $invoice_prefix . $invoice_increment + 1;
-        $service_date = Carbon::now()->format('m/d/Y');
-      //  dd($generator);
-        return view('billing.bill', compact('customers','services','generator','service_date','invoice_increment'));
+            }
+
+        }catch (\Exception $exception){
+
+            return  redirect()->back()->with('toast_error',$exception->getMessage());
+        }
+    }
+    public function bill_one($group_code){
+
+        try {
+            $invoice_prefix = InvoiceNumberGenerator::get()->pluck('fl_prefix')->first();
+            $invoice_increment = InvoiceNumberGenerator::get()->pluck('fl_generator')->first();
+            $fees_group = FeesGroup::all();
+            $students = [];
+            $fees_group_req = FeesGroup::where('fl_feegroup_code','=',$group_code)->get()->first();
+            $u1_admin_structure = U1Department::where('id','=', $fees_group_req->fl_major_code1)
+                ->get()
+                ->first();
+            $u1_programme_code_if_else = U1ProgrammeOffer::where('adminStructCode', '=', $u1_admin_structure->id)
+                ->pluck('programmeCode');
+
+            $generator = $invoice_prefix . $invoice_increment + 1;
+            $service_date = Carbon::now()->format('m/d/Y');
+
+            if($fees_group_req->fl_term_code == null && $fees_group_req->fl_minor_code1 == null && $fees_group_req->fl_minor_code2 == null){
+                $u1_programme = U1ProgrammeOffer::where('adminStructCode', '=', $u1_admin_structure->id)
+                    ->pluck('programmeCode');
+                $fees_structure = FeesStructure::with('service')
+                    ->where('fl_feegroup_code','=',$fees_group_req->fl_feegroup_code)->get();
+                foreach ( $u1_programme as $programme){
+                    $students_accounts = U3StudentProgrammeStatus::where(['programmeCode' => $programme, 'recordStatus' => 'Current'] )->get();
+                    if($students_accounts){
+                        foreach ( $students_accounts as $account){
+                            $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+                        }
+                    }
+                }
+                return view('billing.bill',compact('students','fees_group','fees_structure',
+                    'invoice_increment','generator'));
+            }
+            elseif ($fees_group_req->fl_term_code != null && $fees_group_req->fl_minor_code1 == null && $fees_group_req->fl_minor_code2 == null){
+                //fl_minor_code1 --> programmecode  fl_minor_code2---> intake_type fl_term_code--->session
+                // it works
+
+                $u1_academic_session = U1AcademicSession::where('id','=',$fees_group_req->fl_term_code)
+                    ->pluck('academic_session_name')->first();
+
+
+                $fees_structure = FeesStructure::with('service')
+                    ->where(['fl_feegroup_code' => $fees_group_req->fl_feegroup_code])
+                    ->get();
+                foreach ( $u1_programme_code_if_else as $programme){
+                    $students_accounts = U3StudentProgrammeStatus::where(['session' => $u1_academic_session,
+                        'recordStatus' => 'Current', 'programmeCode'=>$programme] )
+                        ->get();
+                    if($students_accounts){
+                        foreach ( $students_accounts as $account){
+                            $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+                        }
+                    }
+                }
+
+                return view('billing.bill',compact('students','fees_group','fees_structure',
+                    'invoice_increment','generator'));
+            }
+            elseif ($fees_group_req->fl_term_code == null && $fees_group_req->fl_minor_code1 != null && $fees_group_req->fl_minor_code2 == null){
+                // $u1_academic_session = U1AcademicSession::where('id','=',$fees_group_req->fl_term_code)->pluck('academic_session_name')->first();
+                //fl_minor_code1 --> programmecode  fl_minor_code2---> intake_type fl_term_code--->session
+                // dd($fees_group_req->fl_minor_code1);
+                //it works
+                $students_accounts = U3StudentProgrammeStatus::where(['programmeCode'=> $fees_group_req->fl_minor_code1, 'recordStatus' => 'CURRENT'] )->get();
+                $fees_structure = FeesStructure::with('service')
+                    ->where(['fl_feegroup_code' => $fees_group_req->fl_feegroup_code])
+                    ->get();
+                if($students_accounts){
+                    foreach ( $students_accounts as $account){
+                        $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+                    }
+                }
+                return view('billing.bill',compact('students','fees_group','fees_structure',
+                    'invoice_increment','generator'));
+            }
+            elseif ($fees_group_req->fl_term_code == null && $fees_group_req->fl_minor_code1 == null && $fees_group_req->fl_minor_code2 != null){
+                //fl_minor_code1 --> programmecode  fl_minor_code2---> intake_type    fl_term_code--->session
+                //it works
+                $intake_type = U2IntakeType::where(['id'=>$fees_group_req->fl_minor_code2])->pluck('long_name')->first();
+                $students_accounts = U3StudentProgrammeStatus::where(['format' => $intake_type, 'recordStatus' => 'Current'] )->get();
+                $fees_structure = FeesStructure::with('service')
+                    ->where(['fl_feegroup_code' => $fees_group_req->fl_feegroup_code])
+                    ->get();
+                if($students_accounts){
+                    foreach ( $students_accounts as $account){
+                        $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+                    }
+                }
+                return view('billing.bill',compact('students','fees_group','fees_structure',
+                    'invoice_increment','generator'));
+            }
+            elseif ($fees_group_req->fl_term_code != null && $fees_group_req->fl_minor_code1 != null && $fees_group_req->fl_minor_code2 != null){
+                //fl_minor_code1 --> programmecode  fl_minor_code2---> intake_type fl_term_code--->session
+                //it works
+                $intake_type = U2IntakeType::where(['id'=>$fees_group_req->fl_minor_code2])->pluck('long_name')->first();
+                $session = U1AcademicSession::where('id','=',$fees_group_req->fl_term_code)
+                    ->pluck('academic_session_name')->first();
+                $students_accounts = U3StudentProgrammeStatus::where(['format' =>$intake_type,
+                    'programmeCode' =>$fees_group_req->fl_minor_code1 , 'session' =>$session ,'recordStatus' => 'Current'])->get();
+                $fees_structure = FeesStructure::with('service')
+                    ->where(['fl_feegroup_code' => $fees_group_req->fl_feegroup_code])
+                    ->get();
+                if($students_accounts){
+                    foreach ( $students_accounts as $account){
+                        $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+                    }
+                }
+                return view('billing.bill',compact('students','fees_group','fees_structure',
+                    'invoice_increment','generator'));
+            }
+            elseif ($fees_group_req->fl_term_code != null && $fees_group_req->fl_minor_code1 != null && $fees_group_req->fl_minor_code2 == null){
+                //fl_minor_code1 --> programmecode  fl_minor_code2---> intake_type fl_term_code--->session
+                $session = U1AcademicSession::where('id','=',$fees_group_req->fl_term_code)
+                    ->pluck('academic_session_name')->first();
+                $students_accounts = U3StudentProgrammeStatus::where(['programmeCode' =>$fees_group_req->fl_minor_code1 ,
+                    'session' =>$session ,'recordStatus' => 'Current'])->get();
+                $fees_structure = FeesStructure::with('service')
+                    ->where(['fl_feegroup_code' => $fees_group_req->fl_feegroup_code])
+                    ->get();
+                if($students_accounts){
+                    foreach ( $students_accounts as $account){
+                        $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+                    }
+                }
+                return view('billing.bill',compact('students','fees_group','fees_structure',
+                    'invoice_increment','generator'));
+            }
+            elseif ($fees_group_req->fl_term_code == null && $fees_group_req->fl_minor_code1 != null && $fees_group_req->fl_minor_code2 != null){
+                //dd($fees_group_req->fl_minor_code2);
+                //it works
+                //fl_minor_code1 --> programmecode  fl_minor_code2---> intake_type fl_term_code--->session
+
+                $intake = U2IntakeType::where('id','=',$fees_group_req->fl_minor_code2)->pluck('long_name')->first();
+
+                $students_accounts = U3StudentProgrammeStatus::where(['format' =>$intake,
+                    'programmeCode' =>$fees_group_req->fl_minor_code1,
+                    'recordStatus' => 'Current'])->get();
+                $fees_structure = FeesStructure::with('service')
+                    ->where(['fl_feegroup_code' => $fees_group_req->fl_feegroup_code])
+                    ->get();
+                if($students_accounts){
+                    foreach ( $students_accounts as $account){
+                        $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+                    }
+                }
+                return view('billing.bill',compact('students','fees_group','fees_structure',
+                    'invoice_increment','generator'));
+            }
+            elseif ($fees_group_req->fl_term_code != null && $fees_group_req->fl_minor_code1 == null && $fees_group_req->fl_minor_code2 != null){
+                //it works
+                //fl_minor_code1 --> programmecode  fl_minor_code2---> intake_type fl_term_code--->session
+
+                $intake = U2IntakeType::where('id','=',$fees_group_req->fl_minor_code2)->pluck('long_name')->first();
+                $session = U1AcademicSession::where('id','=',$fees_group_req->fl_term_code)
+                    ->pluck('academic_session_name')->first();
+                $students_accounts = U3StudentProgrammeStatus::where(['format' =>$intake,
+                    'session' =>$session ,'recordStatus' => 'Current'])->get();
+                $fees_structure = FeesStructure::with('service')
+                    ->where(['fl_feegroup_code' => $fees_group_req->fl_feegroup_code])
+                    ->get();
+                if($students_accounts){
+                    foreach ( $students_accounts as $account){
+                        $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+                    }
+                }
+                return view('billing.bill',compact('students','fees_group','fees_structure',
+                    'invoice_increment','generator'));
+            }
+            else{
+                return redirect()->back()->with('toast_error','No students for the stated fees group');
+            }
+        }catch (\Exception $exception){
+            return redirect()->back()->with('toast_error', $exception->getMessage());
+        }
+
     }
 
-    public  function bill_one_store(Request $request){
 
+    public  function bill_one_store(Request $request){
         $invoice_number = $request->input('fl_invoice_number');
         $service = $request->input('fl_service_code');
         $unit_price = $request->input('fl_amount_due');
         $generator = $request->input('gen');
+        $invoice_date = $request->input('fl_invoice_date');
+        $service_date = $request->input('fl_service_date');
+        $due_date = $request->input('fl_due_date');
+        $fee_structure_service = $request->input('fee_structure_service');
+        $practitioner_code =$request->input('fl_practitioner_code');
+        $company_session_id = $request->input('fl_company_id');
         $request->validate(
             [
                 'fl_invoice_number' => "unique:tbl_invoice_hdr",
@@ -50,20 +238,34 @@ class InvoiceBillingController extends Controller
         );
 
         try {
+            $fees_service = FeesStructure::with('service')->where('id','=', $fee_structure_service)->get()->first();
             $invoice_generator = $generator + 1;
             $id = InvoiceNumberGenerator::all()->pluck('id')->first();
-            $invoice_header = InvoiceHeader::create($request->except(['_token']));
+            DB::beginTransaction();
+            $invoice_header = InvoiceHeader::create([
+                'fl_invoice_number' => $invoice_number,
+                'fl_practitioner_code' => $practitioner_code,
+                'fl_invoice_date' => $invoice_date,
+                'fl_service_date' => $service_date,
+                'fl_due_date' => $due_date,
+                'fl_amount_due' =>$fees_service->fl_amount,
+                'fl_company_id' => $company_session_id,
+                'fl_closed' => 0
+            ]);
             if($invoice_header){
                 $invoice_detail = new InvoiceDetail();
                 $invoice_detail->fl_invoice_number = $invoice_number;
-                $invoice_detail->fl_service_code = $service;
-                $invoice_detail->fl_unit_price = $unit_price;
+                $invoice_detail->fl_service_code = $fees_service->service->fl_service_code;
+                $invoice_detail->fl_unit_price = $fees_service->fl_amount;
+                $invoice_detail->fl_company_id = $company_session_id;
                 $invoice_detail->save();
                 InvoiceNumberGenerator::where('id',$id)
                     ->update(['fl_generator'=>$invoice_generator]);
             }
+            DB::commit();
             return redirect()->back()->withSuccess('Record saved successfully');
         }catch (\Exception $exception){
+            DB::rollBack();
             return redirect()->back()->with('toast_error', $exception->getMessage());
         }
     }
@@ -73,7 +275,7 @@ class InvoiceBillingController extends Controller
     public function create_billing(){
 
         try {
-            $fees_group = FeesGroup::all();
+            $fees_group = FeesGroup::all()->where('fl_company_id','=', Session::get('company_session_id'));
             $students = null;
             if($fees_group){
                 return view('billing.bulky_billing', compact('fees_group','students'));
@@ -83,76 +285,193 @@ class InvoiceBillingController extends Controller
             }
 
         }catch (\Exception $exception){
-        // throw new \Exception($exception->getMessage());
-//            with('',);
+
             return  redirect()->back()->with('toast_error',$exception->getMessage());
         }
     }
 
     public function get_customers(Request $request){
-        $students = [];
-        $students_accounts = null;
-        $fees_group = FeesGroup::all();
-        $invoice_generator_prefix = InvoiceNumberGenerator::all()->pluck('fl_prefix')->first();
-        $invoice_generator_num = InvoiceNumberGenerator::all()->pluck('fl_generator')->first();
+        try {
+            $students = [];
+            $students_accounts = null;
+            $fees_group = FeesGroup::all()->where('fl_company_id','=', Session::get('company_session_id'));
+            $invoice_generator_prefix = InvoiceNumberGenerator::all()->pluck('fl_prefix')->first();
+            $invoice_generator_num = InvoiceNumberGenerator::all()->pluck('fl_generator')->first();
 
-        $incrementer = $invoice_generator_num +1;
+            $incrementer = $invoice_generator_num +1;
 
-        $fees_group_req = FeesGroup::where('fl_feegroup_code','=',$request->input('fee_group_code'))->get()->first();
-        if($fees_group_req->fl_term_code == null && $fees_group_req->fl_minor_code1 == null && $fees_group_req->fl_minor_code2 == null){
-            $u1_admin_structure = U1Department::where('id','=', $fees_group_req->fl_major_code1)->get()->first();
-           // dd($u1_admin_structure->name);
-            $u1_programme = U1ProgrammeOffer::where('adminStructCode', '=', $u1_admin_structure->id)->pluck('programmeCode');
-            $fees_structure = FeesStructure::with('service')->where('fl_feegroup_code','=',$fees_group_req->fl_feegroup_code)->get();
-            foreach ( $u1_programme as $programme){
-                $students_accounts = U3StudentMember::where('programmeCode', '=', $programme )->get();
+            $fees_group_req = FeesGroup::where('fl_feegroup_code','=',$request->input('fee_group_code'))->get()->first();
+            $u1_admin_structure = U1Department::where('id','=', $fees_group_req->fl_major_code1)
+                ->get()
+                ->first();
+            $u1_programme_code_if_else = U1ProgrammeOffer::where('adminStructCode', '=', $u1_admin_structure->id)
+                ->pluck('programmeCode');
+
+
+            if($fees_group_req->fl_term_code == null && $fees_group_req->fl_minor_code1 == null && $fees_group_req->fl_minor_code2 == null){
+                $u1_programme = U1ProgrammeOffer::where('adminStructCode', '=', $u1_admin_structure->id)
+                    ->pluck('programmeCode');
+                $fees_structure = FeesStructure::with('service')
+                    ->where('fl_feegroup_code','=',$fees_group_req->fl_feegroup_code)->get();
+                foreach ( $u1_programme as $programme){
+                    $students_accounts = U3StudentProgrammeStatus::where(['programmeCode' => $programme, 'recordStatus' => 'Current'] )->get();
+                    if($students_accounts){
+                        foreach ( $students_accounts as $account){
+                            $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+                        }
+                    }
+                }
+                return view('billing.bulky_billing',compact('students','fees_group','fees_structure','incrementer','invoice_generator_num','invoice_generator_prefix'));
+            }
+            elseif ($fees_group_req->fl_term_code != null && $fees_group_req->fl_minor_code1 == null && $fees_group_req->fl_minor_code2 == null){
+                //fl_minor_code1 --> programmecode  fl_minor_code2---> intake_type fl_term_code--->session
+                // it works
+
+                $u1_academic_session = U1AcademicSession::where('id','=',$fees_group_req->fl_term_code)
+                    ->pluck('academic_session_name')->first();
+
+
+                $fees_structure = FeesStructure::with('service')
+                    ->where(['fl_feegroup_code' => $fees_group_req->fl_feegroup_code])
+                    ->get();
+                foreach ( $u1_programme_code_if_else as $programme){
+                    $students_accounts = U3StudentProgrammeStatus::where(['session' => $u1_academic_session,
+                        'recordStatus' => 'Current', 'programmeCode'=>$programme] )
+                        ->get();
+                    if($students_accounts){
+                        foreach ( $students_accounts as $account){
+                            $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+                        }
+                    }
+                }
+
+                return view('billing.bulky_billing',
+                    compact('students','fees_group','fees_structure','incrementer',
+                        'invoice_generator_num','invoice_generator_prefix'));
+            }
+            elseif ($fees_group_req->fl_term_code == null && $fees_group_req->fl_minor_code1 != null && $fees_group_req->fl_minor_code2 == null){
+                // $u1_academic_session = U1AcademicSession::where('id','=',$fees_group_req->fl_term_code)->pluck('academic_session_name')->first();
+                //fl_minor_code1 --> programmecode  fl_minor_code2---> intake_type fl_term_code--->session
+                // dd($fees_group_req->fl_minor_code1);
+                //it works
+                $students_accounts = U3StudentProgrammeStatus::where(['programmeCode'=> $fees_group_req->fl_minor_code1, 'recordStatus' => 'CURRENT'] )->get();
+                $fees_structure = FeesStructure::with('service')
+                    ->where(['fl_feegroup_code' => $fees_group_req->fl_feegroup_code])
+                    ->get();
                 if($students_accounts){
                     foreach ( $students_accounts as $account){
                         $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
                     }
                 }
+                return view('billing.bulky_billing',
+                    compact('students','fees_group','fees_structure','incrementer',
+                        'invoice_generator_num','invoice_generator_prefix'));
             }
-            return view('invoices.bulky_billing',compact('students','fees_group','fees_structure','incrementer','invoice_generator_num','invoice_generator_prefix'));
-        }
-        elseif ($fees_group_req->fl_term_code != null && $fees_group_req->fl_minor_code1 == null && $fees_group_req->fl_minor_code2 == null){
-            $u1_academic_session = U1AcademicSession::where('id','=',$fees_group->fl_term_code)->pluck('academic_session_name')->first();
-            $students_accounts = U3StudentProgrammeStatus::where('session', '=', $u1_academic_session )->get();
-            $fees_structure = FeesStructure::with('service')
-                ->where(['fl_feegroup_code' => $fees_group_req->fl_feegroup_code, 'fl_session_code'=>$fees_group_req->fl_term_code ])
-                ->get();
-            if($students_accounts){
-                foreach ( $students_accounts as $account){
-                    $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+            elseif ($fees_group_req->fl_term_code == null && $fees_group_req->fl_minor_code1 == null && $fees_group_req->fl_minor_code2 != null){
+                //fl_minor_code1 --> programmecode  fl_minor_code2---> intake_type    fl_term_code--->session
+                //it works
+                $intake_type = U2IntakeType::where(['id'=>$fees_group_req->fl_minor_code2])->pluck('long_name')->first();
+                $students_accounts = U3StudentProgrammeStatus::where(['format' => $intake_type, 'recordStatus' => 'Current'] )->get();
+                $fees_structure = FeesStructure::with('service')
+                    ->where(['fl_feegroup_code' => $fees_group_req->fl_feegroup_code])
+                    ->get();
+                if($students_accounts){
+                    foreach ( $students_accounts as $account){
+                        $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+                    }
                 }
+                return view('billing.bulky_billing',
+                    compact('students','fees_group','fees_structure','incrementer',
+                        'invoice_generator_num','invoice_generator_prefix'));
             }
-            return view('invoices.bulky_billing',compact('students','fees_group','fees_structure','incrementer','invoice_generator_num','invoice_generator_prefix'));
-        }
-        elseif ($fees_group_req->fl_term_code == null && $fees_group_req->fl_minor_code1 != null && $fees_group_req->fl_minor_code2 == null){
-            $u1_academic_session = U1AcademicSession::where('id','=',$fees_group->fl_term_code)->pluck('academic_session_name')->first();
-            $students_accounts = U3StudentMember::where('programmeCode', '=', $u1_academic_session )->get();
-        }
-        elseif ($fees_group_req->fl_term_code == null && $fees_group_req->fl_minor_code1 == null && $fees_group_req->fl_minor_code2 != null){
-            $u1_academic_session = U1AcademicSession::where('id','=',$fees_group->fl_term_code)->pluck('academic_session_name')->first();
-            $students_accounts = U3StudentMember::where('programmeCode', '=', $u1_academic_session )->get();
-        }elseif ($fees_group_req->fl_term_code != null && $fees_group_req->fl_minor_code1 != null && $fees_group_req->fl_minor_code2 != null){
-            $u1_academic_session = U1AcademicSession::where('id','=',$fees_group->fl_term_code)->pluck('academic_session_name')->first();
-            $students_accounts = U3StudentMember::where('programmeCode', '=', $u1_academic_session )->get();
-        }
-        elseif ($fees_group_req->fl_term_code != null && $fees_group_req->fl_minor_code1 != null && $fees_group_req->fl_minor_code2 == null){
-            $u1_academic_session = U1AcademicSession::where('id','=',$fees_group->fl_term_code)->pluck('academic_session_name')->first();
-            $students_accounts = U3StudentMember::where('programmeCode', '=', $u1_academic_session )->get();
-        }
-        elseif ($fees_group_req->fl_term_code == null && $fees_group_req->fl_minor_code1 != null && $fees_group_req->fl_minor_code2 != null){
-            $u1_academic_session = U1AcademicSession::where('id','=',$fees_group->fl_term_code)->pluck('academic_session_name')->first();
-            $students_accounts = U3StudentMember::where('programmeCode', '=', $u1_academic_session )->get();
-        }
-        elseif ($fees_group_req->fl_term_code != null && $fees_group_req->fl_minor_code1 == null && $fees_group_req->fl_minor_code2 != null){
-            $u1_academic_session = U1AcademicSession::where('id','=',$fees_group->fl_term_code)->pluck('academic_session_name')->first();
-            $students_accounts = U3StudentMember::where('programmeCode', '=', $u1_academic_session )->get();
+            elseif ($fees_group_req->fl_term_code != null && $fees_group_req->fl_minor_code1 != null && $fees_group_req->fl_minor_code2 != null){
+                //fl_minor_code1 --> programmecode  fl_minor_code2---> intake_type fl_term_code--->session
+                //it works
+                $intake_type = U2IntakeType::where(['id'=>$fees_group_req->fl_minor_code2])->pluck('long_name')->first();
+                $session = U1AcademicSession::where('id','=',$fees_group_req->fl_term_code)
+                    ->pluck('academic_session_name')->first();
+                $students_accounts = U3StudentProgrammeStatus::where(['format' =>$intake_type,
+                    'programmeCode' =>$fees_group_req->fl_minor_code1 , 'session' =>$session ,'recordStatus' => 'Current'])->get();
+                $fees_structure = FeesStructure::with('service')
+                    ->where(['fl_feegroup_code' => $fees_group_req->fl_feegroup_code])
+                    ->get();
+                if($students_accounts){
+                    foreach ( $students_accounts as $account){
+                        $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+                    }
+                }
+                return view('billing.bulky_billing',
+                    compact('students','fees_group','fees_structure','incrementer',
+                        'invoice_generator_num','invoice_generator_prefix'));
+            }
+            elseif ($fees_group_req->fl_term_code != null && $fees_group_req->fl_minor_code1 != null && $fees_group_req->fl_minor_code2 == null){
+                //fl_minor_code1 --> programmecode  fl_minor_code2---> intake_type fl_term_code--->session
+                $session = U1AcademicSession::where('id','=',$fees_group_req->fl_term_code)
+                    ->pluck('academic_session_name')->first();
+                $students_accounts = U3StudentProgrammeStatus::where(['programmeCode' =>$fees_group_req->fl_minor_code1 ,
+                    'session' =>$session ,'recordStatus' => 'Current'])->get();
+                $fees_structure = FeesStructure::with('service')
+                    ->where(['fl_feegroup_code' => $fees_group_req->fl_feegroup_code])
+                    ->get();
+                if($students_accounts){
+                    foreach ( $students_accounts as $account){
+                        $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+                    }
+                }
+                return view('billing.bulky_billing',
+                    compact('students','fees_group','fees_structure','incrementer',
+                        'invoice_generator_num','invoice_generator_prefix'));
+            }
+            elseif ($fees_group_req->fl_term_code == null && $fees_group_req->fl_minor_code1 != null && $fees_group_req->fl_minor_code2 != null){
+                //dd($fees_group_req->fl_minor_code2);
+                //it works
+                //fl_minor_code1 --> programmecode  fl_minor_code2---> intake_type fl_term_code--->session
+
+                $intake = U2IntakeType::where('id','=',$fees_group_req->fl_minor_code2)->pluck('long_name')->first();
+
+                $students_accounts = U3StudentProgrammeStatus::where(['format' =>$intake,
+                    'programmeCode' =>$fees_group_req->fl_minor_code1,
+                    'recordStatus' => 'Current'])->get();
+                $fees_structure = FeesStructure::with('service')
+                    ->where(['fl_feegroup_code' => $fees_group_req->fl_feegroup_code])
+                    ->get();
+                if($students_accounts){
+                    foreach ( $students_accounts as $account){
+                        $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+                    }
+                }
+                return view('billing.bulky_billing',
+                    compact('students','fees_group','fees_structure','incrementer',
+                        'invoice_generator_num','invoice_generator_prefix'));
+            }
+            elseif ($fees_group_req->fl_term_code != null && $fees_group_req->fl_minor_code1 == null && $fees_group_req->fl_minor_code2 != null){
+                //it works
+                //fl_minor_code1 --> programmecode  fl_minor_code2---> intake_type fl_term_code--->session
+
+                $intake = U2IntakeType::where('id','=',$fees_group_req->fl_minor_code2)->pluck('long_name')->first();
+                $session = U1AcademicSession::where('id','=',$fees_group_req->fl_term_code)
+                    ->pluck('academic_session_name')->first();
+                $students_accounts = U3StudentProgrammeStatus::where(['format' =>$intake,
+                    'session' =>$session ,'recordStatus' => 'Current'])->get();
+                $fees_structure = FeesStructure::with('service')
+                    ->where(['fl_feegroup_code' => $fees_group_req->fl_feegroup_code])
+                    ->get();
+                if($students_accounts){
+                    foreach ( $students_accounts as $account){
+                        $students[] = Customer::where('fl_consumer_account','=', $account->studentNumber )->get()->first();
+                    }
+                }
+                return view('billing.bulky_billing',
+                    compact('students','fees_group','fees_structure','incrementer',
+                        'invoice_generator_num','invoice_generator_prefix'));
+            }
+            else{
+                return redirect()->back()->with('toast_error','No students for the stated fees group');
+            }
+        }catch (\Exception $exception){
+                return redirect()->back()->with('toast_error', $exception->getMessage());
         }
 
-
-        return redirect()->back()->with('toast_error','No students for the stated fees group');
     }
 
     public function bulk_billing(Request $request){
@@ -175,14 +494,14 @@ class InvoiceBillingController extends Controller
             $invoice_header = [];
             $invoice_detail = [];
             $full_invoice_number = null;
-            $idGenerator = null;
+           // $idGenerator = null;
             $id = InvoiceNumberGenerator::all()->pluck('id')->first();
 
             $fees_service = FeesStructure::with('service')->where('id','=', $fee_structure_service)->get()->first();
             DB::beginTransaction();
 
             foreach ($consumer_account as $index=>$account){
-                // $invoice_number = 'B'.'-'.$randomString. ;
+                $idGenerator = $id_generator;
                 $invoice_header [] = [
                     'fl_invoice_number' => $invoice_number[$index],
                     'fl_practitioner_code' => $account,
@@ -190,6 +509,7 @@ class InvoiceBillingController extends Controller
                     'fl_service_date' => $service_due_date,
                     'fl_due_date' => $due_date,
                     'fl_amount_due' => $fees_service->fl_amount,
+                    'fl_company_id' => Session::get('company_session_id'),
                     'fl_closed' => 0
                 ] ;
 
@@ -199,6 +519,7 @@ class InvoiceBillingController extends Controller
                     'fl_unit_price' => $fees_service->fl_amount,
                     'fl_quantity' => 1,
                     'fl_tax_amount' => 0,
+                    'fl_company_id' => Session::get('company_session_id'),
                     'fl_line_total' => $index ++
                 ];
 
@@ -207,6 +528,7 @@ class InvoiceBillingController extends Controller
                     $full_invoice_number = $invoice_number[$index];
                 }
             }
+
 
             $inv_dtl =  InvoiceDetail::insert($invoice_detail);
             $inv_hdr = InvoiceHeader::insert($invoice_header);
@@ -220,6 +542,7 @@ class InvoiceBillingController extends Controller
 
 
         }catch (\Exception $exception){
+            DB::rollBack();
             return redirect()->to('customer-billing/')->with('toast_error', $exception->getMessage());
         }
 

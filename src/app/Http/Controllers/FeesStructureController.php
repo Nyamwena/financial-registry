@@ -11,6 +11,7 @@ use App\Models\Services;
 use App\Models\U1AcademicSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class FeesStructureController extends Controller
 {
@@ -28,13 +29,13 @@ class FeesStructureController extends Controller
             if (!$check_institution){
                 return  redirect()->to('/institute')->with('toast_error', 'Please add institution details first');
             }
-            $fees_grp = FeesGroup::all();
-            $ordinance = FeesOrdinance::all();
+            $fees_grp = FeesGroup::all()->where('fl_company_id','=',Session::get('company_session_id'));
+            $ordinance = FeesOrdinance::all()->where('fl_company_id','=',Session::get('company_session_id'));
             $session = U1AcademicSession::where('status', '=', 'Active')->get();
-            $service_code = Services::all();
+            $service_code = Services::all()->where('fl_company_id','=',Session::get('company_session_id'));
             $currency = Currency::where('fl_active','=',1)->get();
           //  dd($session);
-            $fees_structure = FeesStructure::with('service','fees_group','ordinance','currency')
+            $fees_structure = FeesStructure::with('service','fees_group','ordinance','currency')->where('fl_company_id','=',Session::get('company_session_id'))
                                     ->get();
             if(!$fees_grp && !$ordinance && !$session && !$service_code && !$currency){
                 return  redirect()->back()->with('info', 'Some parameters are missing ');

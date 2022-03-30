@@ -26,11 +26,11 @@
                                     @endforeach
                                 </select>
                             </div>
-
+                            <input type="hidden" value="{{\Session::get('company_session_id')}}" name="fl_company_id">
                             <div class="intro-y col-span-12 sm:col-span-6">
                                 <div class="mb-2">Programme</div>
-                                <select name="fl_minor_code1[]" class="input w-full border flex-1 select2"  multiple id="" >
-                                    <option disabled>----select programme------</option>
+                                <select name="fl_minor_code1" class="input w-full border flex-1 select2"   id="" >
+                                    <option selected disabled>----select programme------</option>
                                     @foreach( $programme_code as $code)
                                         <option value="{{$code->programmeCode}}">{{$code->programmeName}}</option>
                                     @endforeach
@@ -50,7 +50,7 @@
                             <div class="intro-y col-span-12 sm:col-span-6">
                                 <div class="mb-2">Session/Term</div>
                                 <select name="fl_term_code" class="input w-full border flex-1 select2"   id="">
-                                    <option disabled>----select session/term------</option>
+                                    <option selected disabled>----select session/term------</option>
                                     @foreach($session as $code)
                                         <option value="{{$code->id}}">{{$code->academic_session_name}}   {{'Year--->'}} {{$code->academic_year}}</option>
                                     @endforeach

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('fl_base_rate_amount', 13,4);
             $table->decimal('fl_dest_rate', 13,4);
             $table->boolean('fl_bulletin_active')->default(1);
+            $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
 
             $table->foreign('fl_currency_code')->references('fl_currency_code')->on('tbl_currency')->onDelete('cascade');

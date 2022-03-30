@@ -20,6 +20,7 @@
                                 <div class="mb-2 text-red-50"> {{$message}}</div>
                                 @enderror
                             </div>
+                            <input type="hidden" value="{{\Session::get('company_session_id')}}" name="fl_company_id">
 
                             <div class="intro-y col-span-12 sm:col-span-6">
                                 <div class="mb-2">Period Name</div>

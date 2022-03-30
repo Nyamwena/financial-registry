@@ -25,6 +25,7 @@ return new class extends Migration
             $table->date('fl_approved_date')->nullable();
             $table->decimal('fl_plan_amount',13,4);
             $table->integer('fl_instalments');
+            $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
         });
     }

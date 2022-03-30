@@ -20,6 +20,7 @@
                                 @enderror
 
                             </div>
+                            <input type="hidden" value="{{\Session::get('company_session_id')}}" name="fl_company_id">
                             <div class="intro-y col-span-12 sm:col-span-5">
                                 <div class="mb-2">Account Name</div>
                                 <input type="text" class="input w-full border flex-1" placeholder=" " name="fl_account_name"  required>
@@ -60,7 +61,7 @@
                                 <div class="mb-2">Account Subtype-B</div>
                                 <select name="fl_account_sub_type_b" data-placeholder="Select Account Type" class="select2 w-full" id="" required>
                                     <option value="">----pick an option--- </option>
-                                    <option value="1">No account</option>
+                                    <option value="-1">No account</option>
                                     @foreach($account_type as $type)
                                         <option value="{{$type->fl_acc_type_code}}">{{$type->fl_account_type_name}}</option>
                                     @endforeach

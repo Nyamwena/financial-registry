@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('fl_instalment _type')->default(0);
             $table->decimal('fl_instalment _amount',13,4);
             $table->date('fl_instalment_due_date');
+            $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
 
             $table->foreign('fl_payment_plan_ref')->references('fl_payment_plan_ref')->on('tbl_payment_plan')->onDelete('cascade');

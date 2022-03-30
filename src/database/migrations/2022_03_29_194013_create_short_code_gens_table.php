@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_account_type', function (Blueprint $table) {
-            $table->id('fl_acc_type_code');
-            $table->string('fl_account_type_name', length: 100);
-            $table->integer('fl_account_range_a');
-            $table->integer('fl_account_range_z');
-            $table->unsignedBigInteger('fl_company_id');
+        Schema::create('tbl_short_code_generator', function (Blueprint $table) {
+            $table->id();
+            $table->string('fl_prefix');
+            $table->unsignedBigInteger('fl_generator');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('account_types');
+        Schema::dropIfExists('short_code_gens');
     }
 };

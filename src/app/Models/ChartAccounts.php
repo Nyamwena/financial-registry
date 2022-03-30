@@ -16,6 +16,7 @@ class ChartAccounts extends Model
         'fl_account_sub_type_a',
         'fl_account_sub_type_b',
         'fl_account_bank',
+        'fl_company_id'
     ];
 
     public function account_type_main(): \Illuminate\Database\Eloquent\Relations\BelongsTo

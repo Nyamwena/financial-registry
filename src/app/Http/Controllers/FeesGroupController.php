@@ -10,6 +10,7 @@ use App\Models\U1Programme;
 use App\Models\U2IntakeType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class FeesGroupController extends Controller
 {
@@ -26,31 +27,33 @@ class FeesGroupController extends Controller
 
         $programme_code = U1Programme::all();
         $intake_type = U2IntakeType::all();
-        $fees_grp = FeesGroup::all();
+        $fees_grp = FeesGroup::where('fl_company_id','=',Session::get('company_session_id'))->get();
 
         return view('fees_grp.add', compact('dept_code','session','programme_code','intake_type','fees_grp'));
     }
 
     public function  create_fees_group(Request $request){
             $major_code = $request->input('fl_major_code');
-            $minor_code1 = $request->input('fl_minor_code1',[]);
+            $minor_code1 = $request->input('fl_minor_code1');
             $minor_code2 = $request->input('fl_minor_code2');
             $term_code = $request->input('fl_term_code');
             $description = $request->input('fl_description');
+          //  $company_id = $request->input('fl_company_id');
 
            // dd($minor_code2);
         try {
             $fees_group = [];
                 DB::beginTransaction();
-            foreach ($minor_code1 as $index=>$fees){
+
                 $fees_group [] = [
                     'fl_description' => $description,
                     'fl_major_code1' => $major_code,
-                    'fl_minor_code1' => $minor_code1[$index],
+                    'fl_minor_code1' => $minor_code1,
                     'fl_minor_code2' => $minor_code2,
-                    'fl_term_code' => $term_code
+                    'fl_term_code' => $term_code,
+                    'fl_company_id' => Session::get('company_session_id')
                     ];
-            }
+
             $fees_save = FeesGroup::insert($fees_group);
             DB::commit();
             if ($fees_save){

@@ -11,7 +11,7 @@ class Responsibility extends Model
     protected $table = 'tbl_responsibility';
     protected $fillable =[
         'fl_centre_short_code',
-        'fl_centre_name',
+        'fl_centre_name','fl_company_id'
 
     ];
 }

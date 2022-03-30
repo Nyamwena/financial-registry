@@ -7,6 +7,7 @@ use App\Models\AccountPeriodDetail;
 use App\Models\Institute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Validator;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -23,13 +24,13 @@ class AccountPeriodController extends Controller
         if (!$check_institution){
             return  redirect()->to('/institute')->with('toast_error', 'Please add institution details first');
         }
-        $account_period = AccountPeriod::all();
+        $account_period = AccountPeriod::all()->where('fl_company_id','=', Session::get('company_session_id'));
         return view('account_period.add', compact('account_period'));
     }
 
     public function account_range_view($period_code){
         try {
-            $period_det = AccountPeriodDetail::where(['fl_period_code' => $period_code])->get();
+            $period_det = AccountPeriodDetail::where(['fl_period_code' => $period_code, 'fl_company_id'=>Session::get('company_session_id')])->get();
 
             return view('account_period.view_ranges', compact('period_det'));
         }catch (\Exception $exception){
@@ -76,7 +77,8 @@ class AccountPeriodController extends Controller
                     'fl_dtl_date_a' => date('Y-m-d H:i:s', $milestones[$i-1]), // Here you can apply your formatting (like "date('Y-m-d H:i:s', $milestones[$i-1])") if you don't won't want just timestamp
                     'fl_dtl_date_z'   => date('Y-m-d H:i:s', $milestones[$i] - 1),
                     'fl_period_det_name' => $period_name.'-' . 0 + $i,
-                    'fl_period_code' => $period_code
+                    'fl_period_code' => $period_code,
+                    'fl_company_id' => Session::get('company_session_id')
                 ];
             }
 

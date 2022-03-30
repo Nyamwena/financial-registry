@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('fl_payment_code');
             $table->unsignedBigInteger('fl_currency_code');
             $table->decimal('fl_remittance_amount', 13,4);
+            $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
 
             $table->foreign('fl_consumer_account')->references('fl_consumer_account')->on('tbl_consumer')->onDelete('cascade');

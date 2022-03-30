@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('fl_date_z');
             $table->boolean('fl_closed');
             $table->boolean('fl_archived');
+            $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
         });
     }

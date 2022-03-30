@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('fl_invoice_number', length: 10);
             $table->string('fl_customer_number');
             $table->decimal('fl_remittance_line_amount', 13,4);
+            $table->unsignedBigInteger('fl_receipt_number');
+            $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
 
             $table->foreign('fl_remittance_num')->references('fl_remittance_num')->on('tbl_remittance_hdr')->onDelete('cascade');

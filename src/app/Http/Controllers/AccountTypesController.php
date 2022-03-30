@@ -6,6 +6,7 @@ use App\Models\AccountTypes;
 use App\Models\Institute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class AccountTypesController extends Controller
@@ -18,7 +19,8 @@ class AccountTypesController extends Controller
     public function index()
     {
         $check_institution = Institute::all()->first();
-        $account_types = AccountTypes::all();
+        $account_types = AccountTypes::all()->where('fl_company_id','=', Session::get('company_session_id'));
+
         if (!$check_institution){
             return  redirect()->to('/institute')->with('toast_error', 'Please add institution details first');
         }

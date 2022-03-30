@@ -7,12 +7,14 @@ use App\Models\Institute;
 use App\Models\InvoiceDetail;
 use App\Models\InvoiceHeader;
 use App\Models\PaymentMethods;
+use App\Models\ReceiptNumber;
 use App\Models\Remittance;
 use App\Models\RemittanceDetail;
 use App\Models\Services;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class InvoiceController extends Controller
 {
@@ -29,11 +31,11 @@ class InvoiceController extends Controller
     public function process_invoice($invoice_number){
 
         try {
-            $invoice_hdr = InvoiceHeader::where('fl_invoice_number',$invoice_number)->get()->first();
+            $invoice_hdr = InvoiceHeader::where('fl_invoice_number',$invoice_number)->where('fl_company_id', Session::get('company_sesssion_id'))->get()->first();
 
-            $invoice_dtl = InvoiceDetail::where('fl_invoice_number',$invoice_number)->get()->first();
+            $invoice_dtl = InvoiceDetail::where('fl_invoice_number',$invoice_number)->where('fl_company_id', Session::get('company_sesssion_id'))->get()->first();
 
-            $service = Services::where('fl_service_code',$invoice_dtl->fl_service_code)->get()->first();
+            $service = Services::where('fl_service_code',$invoice_dtl->fl_service_code)->where('fl_company_id', Session::get('company_sesssion_id'))->get()->first();
             $currency = Currency::where('fl_active',1)->get();
             $payment_method = PaymentMethods::where('fl_paymethod_active',1)->get();
 
@@ -57,13 +59,19 @@ class InvoiceController extends Controller
             $amount_total = $check_if_amount + $check_amount_paid;
            // dd($check_if_amount);
             //if 200 >= 2000
+            $receipt_id = ReceiptNumber::all()->pluck('id')->first();
+            $receipt_increment =  ReceiptNumber::all()->pluck('fl_increment')->first();
             DB::beginTransaction();
                     $remittance_hdr = Remittance::create($request->except(['_token']));
                      $remittance_hdr->invoice_details()->create([
                          'fl_invoice_number' => $request->input('fl_invoice_number'),
                          'fl_customer_number' => $request->input('fl_consumer_account'),
-                         'fl_remittance_line_amount' => $request->input('fl_remittance_amount')
+                         'fl_remittance_line_amount' => $request->input('fl_remittance_amount'),
+                         'fl_company_id' => Session::get('company_session_id'),
+                         'fl_receipt_number' => $receipt_increment
                      ]);
+                     $receipt_number = ReceiptNumber::where('id', $receipt_id)
+                                        ->update(['fl_increment' => $receipt_increment + 1]);
 
                      if( $request->input('fl_remittance_amount') >=  $amount_total  ){
                          InvoiceHeader::where(['fl_invoice_number'=> $request->input('fl_invoice_number')])

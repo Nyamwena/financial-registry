@@ -21,6 +21,7 @@
 
                                 </select>
                             </div>
+                            <input type="hidden" value="{{\Session::get('company_session_id')}}" name="fl_company_id">
 
                             <div class="intro-y col-span-12 sm:col-span-6">
                                 <div class="mb-2">Base Currency Amount</div>
@@ -106,13 +107,13 @@
                             </td>
                             <td class=" border-b">
                                 {{$rate->currency_base->fl_currency_name}} <br>
-                                {{$rate->fl_base_rate_amount}}
+                                {{round($rate->fl_base_rate_amount,2)}}
 
                             </td>
                             <td class=" border-b">
 
                                 {{$rate->currency_dest->fl_currency_name}} <br>
-                                {{$rate->fl_dest_rate}}
+                                {{round($rate->fl_dest_rate,2)}}
 
                             </td>
                             <td class=" border-b">

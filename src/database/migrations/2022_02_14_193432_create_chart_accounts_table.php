@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('fl_account_sub_type_a');
             $table->integer('fl_account_sub_type_b');
             $table->boolean('fl_account_bank');
+            $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
         });
     }

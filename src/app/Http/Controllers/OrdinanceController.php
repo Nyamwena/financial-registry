@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FeesOrdinance;
 use App\Models\Institute;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class OrdinanceController extends Controller
 {
@@ -16,7 +17,7 @@ class OrdinanceController extends Controller
             return  redirect()->to('/institute')->with('toast_error', 'Please add institution details first');
         }
 
-        $ordinance = FeesOrdinance::all();
+        $ordinance = FeesOrdinance::all()->where('fl_company_id', '=',Session::get('company_session_id'));
 
         return view('ordinance.add', compact('ordinance'));
     }

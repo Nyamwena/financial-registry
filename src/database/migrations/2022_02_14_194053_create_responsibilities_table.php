@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id('fl_centre_code');
             $table->string('fl_centre_short_code')->index();
             $table->string('fl_centre_name', length: 100);
+            $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
         });
     }

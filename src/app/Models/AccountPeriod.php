@@ -16,5 +16,6 @@ class AccountPeriod extends Model
         'fl_date_z',
         'fl_closed',
         'fl_archived',
+        'fl_company_id'
     ];
 }

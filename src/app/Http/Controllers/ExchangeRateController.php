@@ -6,12 +6,15 @@ use App\Models\Currency;
 use App\Models\ExchangeRate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class ExchangeRateController extends Controller
 {
 
     public function index(){
-        $exchange_rate = ExchangeRate::with('currency_dest','currency_base')->get();
+        $exchange_rate = ExchangeRate::with('currency_dest','currency_base')
+            ->where('fl_company_id','=',Session::get('company_session_id'))
+                        ->get();
            // dd($exchange_rate);
 
 

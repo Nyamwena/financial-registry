@@ -10,5 +10,5 @@ class FeesOrdinance extends Model
     use HasFactory;
 
     protected $table = 'tbl_ordinance';
-    protected $fillable = ['fl_desc','fl_date_a','fl_date_z','fl_active'];
+    protected $fillable = ['fl_desc','fl_date_a','fl_date_z','fl_active','fl_company_id'];
 }

@@ -18,10 +18,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
          AccountTypeSeeder::class,
           MicroServiceSeeder::class,
-        AccountTypeNoRelSeeder::class,
             UserSeeder::class,
             RoleSeeder::class,
             RoleUserSeeder::class,
+            InvoiceGeneratorSeeder::class,
+            ShortCodeGenSeeder::class,
+        ReceiptNumberSeeder::class,
         ]);
     }
 }

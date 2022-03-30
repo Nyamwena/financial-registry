@@ -13,8 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('tbl_inventory_service', function (Blueprint $table) {
-           // $table->string('fl_service_dest')->nullable();
+        Schema::create('tbl_receipt_number', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('fl_increment');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('tbl_inventory_service', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('reciept_numbers');
     }
 };

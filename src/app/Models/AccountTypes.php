@@ -13,5 +13,6 @@ class AccountTypes extends Model
         'fl_account_type_name',
         'fl_account_range_a',
         'fl_account_range_z',
+        'fl_company_id'
     ];
 }

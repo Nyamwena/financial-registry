@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('fl_period_det_name', length: 20);
             $table->date('fl_dtl_date_a');
             $table->date('fl_dtl_date_z');
+            $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
 
             $table->foreign('fl_period_code')->references('fl_period_code')->on('tbl_period_hdr')->onDelete('cascade');

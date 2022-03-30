@@ -8,6 +8,7 @@ use App\Models\ChartAccounts;
 use App\Models\Institute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class ChartAccountsController extends Controller
 {
@@ -22,10 +23,10 @@ class ChartAccountsController extends Controller
         if (!$check_institution){
             return  redirect()->to('/institute')->with('toast_error', 'Please add institution details first');
         }
-        $account_type = AccountTypes::all();
+        $account_type = AccountTypes::all()->where('fl_company_id','=', Session::get('company_session_id'));
 
         $chart_accounts= ChartAccounts::with('account_type_main',
-            'account_type_a','account_type_b')
+            'account_type_a','account_type_b')->where('fl_company_id','=', Session::get('company_session_id'))
                         ->get();
 
        // dd($chart_accounts->fl_account_num);
@@ -57,23 +58,24 @@ class ChartAccountsController extends Controller
         $account = $request->input('fl_account_num');
         try {
 
-            $validate_accounts = AccountTypes::get();
+            $validate_accounts = AccountTypes::where('fl_company_id','=', Session::get('company_session_id'))->get();
            // dd($validate_accounts);
 
-            foreach ($validate_accounts as $range){
-                // 3000 >= db_value  && 7000 <= db_value ------->this check for rang
-                if($account >= $range->fl_account_range_a && $account <= $range->fl_account_range_z ) {
-                    DB::beginTransaction();
-                    ChartAccounts::create($request->except(['_token']));
-                    DB::commit();
+            DB::beginTransaction();
+            ChartAccounts::create($request->except(['_token']));
+            DB::commit();
 
-                    return redirect()->back()->with('toast_success','Saved Successfully');
+            return redirect()->back()->with('toast_success','Saved Successfully');
 
-                } else {
-                    return redirect()->back()->with('toast_warning','This account is not available in account types range');
-                }
-
-            }
+//            foreach ($validate_accounts as $range){
+//                // 3000 >= db_value  && 7000 <= db_value ------->this check for rang
+//                if($account >= $range->fl_account_range_a && $account <= $range->fl_account_range_z ) {
+//
+//                } else {
+//                    return redirect()->back()->with('toast_warning','This account is not available in account types range');
+//                }
+//
+//            }
         }catch (\Exception $exception){
             DB::rollback();
 

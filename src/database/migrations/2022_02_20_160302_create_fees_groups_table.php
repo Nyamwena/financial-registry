@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('fl_minor_code1')->nullable();
             $table->string('fl_minor_code2')->nullable();
             $table->string('fl_term_code')->nullable();
+            $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
         });
     }

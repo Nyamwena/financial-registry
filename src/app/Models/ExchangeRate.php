@@ -16,6 +16,7 @@ class ExchangeRate extends Model
         'fl_currency_code_dest',
         'fl_base_rate_amount',
         'fl_dest_rate',
+        'fl_company_id'
     ];
 
     public function currency_base(): \Illuminate\Database\Eloquent\Relations\BelongsTo

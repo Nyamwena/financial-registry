@@ -39,8 +39,6 @@
                     </div>
 
                 </div>
-
-
             </div>
         </div>
 
@@ -57,7 +55,6 @@
                             <th class="border-b-2 whitespace-no-wrap">Customer Name</th>
                             <th class="border-b-2 whitespace-no-wrap">Email</th>
                             <th class="border-b-2 whitespace-no-wrap">Mobile</th>
-                            <th class="border-b-2 whitespace-no-wrap">Action</th>
                         </tr>
                         </thead>
                         <tbody >
@@ -72,9 +69,7 @@
                                 <td>Mobile#:  {{$customer->fl_mobile_number}}<br>
                                     Telephone#: {{$customer->fl_telephone}}
                                 </td>
-                                <td>
-                                    View Transaction History
-                                </td>
+
 
                             </tr>
                         @endforeach
@@ -132,6 +127,7 @@
                         <label for=""> Service Date</label>
                         <input type="date"  class="input w-full border flex-1"  name="fl_service_date" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
                     </div>
+                    <input type="hidden" value="{{\Session::get('company_session_id')}}" name="fl_company_id">
 
                     <div class="col-span-12 sm:col-span-6" >
                         @isset($students)

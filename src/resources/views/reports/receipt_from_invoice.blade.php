@@ -134,7 +134,7 @@
 
                         <td>
                             {{--                           @foreach($student_bio as $student)--}}
-                            Invoice #: {{$receipt->remittance_detail->fl_invoice_number}}<br />
+                            Receipt #: {{"REC-"}}{{$receipt->remittance_detail->fl_receipt_number}}<br />
                             Customer Account: {{$receipt->fl_consumer_account}}<br />
                             Remittance Date: {{$receipt->fl_remittance_date}} <br>
                             Payment Method: {{$receipt->payment_method->fl_payment_descr}}<br>
@@ -167,7 +167,7 @@
 
                 <tr class="item">
 
-                    <td>{{$receipt->fl_remittance_amount}}</td>
+                    <td>{{round($receipt->fl_remittance_amount,2)}}</td>
 
                     <td>{{$remittance_detail->fl_service_name}}</td>
 

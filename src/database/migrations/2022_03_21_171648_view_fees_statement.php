@@ -22,7 +22,7 @@ return new class extends Migration
                      tbl_invoice_hdr.fl_invoice_number as invoice_number,
                     tbl_invoice_hdr.fl_amount_due as balance,
                    tbl_service.fl_service_name as service_name, null fees_paid, null payment_desc , null currency_name,
-                   tbl_invoice_hdr.fl_invoice_date as trans_date
+                   tbl_invoice_hdr.fl_invoice_date as trans_date , tbl_invoice_hdr.fl_company_id as company_id
 
                   FROM
                     tbl_invoice_hdr
@@ -35,7 +35,7 @@ return new class extends Migration
                    null balance, null service_name,
                    tbl_remittance_dtl.fl_remittance_line_amount as fees_paid, tbl_payment_type.fl_payment_descr as payment_desc,
                    tbl_currency.fl_currency_name as currency_name,
-                   tbl_remittance_hdr.fl_remittance_date as trans_date
+                   tbl_remittance_hdr.fl_remittance_date as trans_date, tbl_remittance_hdr.fl_company_id as company_id
                    FROM
                    tbl_remittance_dtl
 

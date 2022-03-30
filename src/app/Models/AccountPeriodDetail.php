@@ -15,5 +15,6 @@ class AccountPeriodDetail extends Model
         'fl_period_code',
       'fl_dtl_date_a',
       'fl_dtl_date_z',
+        'fl_company_d'
     ];
 }

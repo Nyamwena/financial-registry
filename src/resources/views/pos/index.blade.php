@@ -85,6 +85,7 @@
                                             @endforeach
                                         </select>
                                         <span id="error_code"></span>
+                                        <input type="hidden" value="{{\Session::get('company_session_id')}}" name="fl_company_id">
 
                                     </div>
                                     <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">

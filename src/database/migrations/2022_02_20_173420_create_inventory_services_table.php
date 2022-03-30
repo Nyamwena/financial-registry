@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('fl_unit_cost', 13,4);
             $table->decimal('fl_retail_price', 13,4);
             $table->string('fl_service_dest')->nullable();
+            $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
         });
     }

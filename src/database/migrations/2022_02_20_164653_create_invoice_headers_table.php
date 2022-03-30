@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('fl_due_date');
             $table->decimal('fl_amount_due');
             $table->boolean('fl_closed');
+            $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
         });
     }

@@ -6,7 +6,7 @@
     <div class="side-nav__devider my-6"></div>
     <ul>
         <li>
-            <a href="{{url('/')}}" class="side-menu  @if(Request::is('/')) side-menu--active @endif">
+            <a href="{{url('/dashboard')}}" class="side-menu  @if(Request::is('dashboard/*')) side-menu--active @endif">
                 <div class="side-menu__icon"> <i data-feather="home"></i> </div>
                 <div class="side-menu__title"> Dashboard </div>
             </a>
@@ -148,7 +148,7 @@
             </a>
             <ul class="">
                 <li>
-                    <a href="{{route('invoice-billing.bill-one')}}" class="side-menu @if(Request::routeIs('invoice-billing.bill-one')) side-menu--active @endif">
+                    <a href="{{route('invoice-billing.select-group')}}" class="side-menu @if(Request::routeIs('invoice-billing.select-group')) side-menu--active @endif">
                         <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
                         <div class="side-menu__title">Customer Billing</div>
                     </a>
@@ -159,6 +159,31 @@
                         <div class="side-menu__title">Bulk Billing</div>
                     </a>
                 </li>
+
+            </ul>
+        </li>
+
+        <li class="side-nav__devider my-6"></li>
+        <li>
+            <a href="javascript:;" class="side-menu @if(Request::is('point-of-sale/*')) side-menu--active @endif">
+                <div class="side-menu__icon"> <i data-feather="monitor"></i> </div>
+                <div class="side-menu__title">Remittance<i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a href="{{route('pos.index')}}" class="side-menu @if(Request::routeIs('pos.index')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
+                        <div class="side-menu__title">Fees Collection</div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('fees-report.index')}}" class="side-menu @if(Request::routeIs('fees-report.index')) side-menu--active @endif">
+                        <div class="side-menu__icon"> <i data-feather="edit"></i> </div>
+                        <div class="side-menu__title">Fees Statement</div>
+                    </a>
+                </li>
+
 
             </ul>
         </li>

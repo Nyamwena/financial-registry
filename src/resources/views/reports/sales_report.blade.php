@@ -29,6 +29,17 @@
                                     Sales Report with date Range
                                  </a>
                             </span>
+                            <form action="{{route('sales-report.payment_type')}}" method="post">
+                                @csrf
+
+                                <select name="payment_code" id="" class="select2 input input--lg box w-full lg:w-full mt-3 lg:mt-0 ml-auto col-12"  onchange="this.form.submit()">
+                                    <option value="" selected disabled>Generate report by payment type</option>
+                                    @foreach($payment_type as $type)
+                                        <option value="{{$type->fl_payment_code}}">{{$type->fl_payment_descr}}</option>
+                                    @endforeach
+                                </select>
+
+                            </form>
                         </div>
 
                     </div>

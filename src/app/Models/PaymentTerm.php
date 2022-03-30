@@ -13,6 +13,6 @@ class PaymentTerm extends Model
     protected $fillable = [
       'fl_payment_plan_ref','fl_line_number',
         'fl_instalment _type','fl_instalment _amount',
-        'fl_instalment_due_date'
+        'fl_instalment_due_date','fl_company_d'
     ];
 }

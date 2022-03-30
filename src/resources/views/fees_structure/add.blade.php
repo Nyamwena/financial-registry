@@ -66,10 +66,11 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <input type="hidden" value="{{\Session::get('company_session_id')}}" name="fl_company_id">
 
                             <div class="intro-y col-span-12 sm:col-span-6">
                                 <div class="mb-2">Fee Amount</div>
-                                <input type="number" name="fl_amount" class="input w-full border flex-1" required>
+                                <input type="number" name="fl_amount" step=".01" class="input w-full border flex-1" required>
                             </div>
                             <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">
                                 <button type="reset" class="button w-24 justify-center block bg-red-200 text-gray-600">Reset</button>

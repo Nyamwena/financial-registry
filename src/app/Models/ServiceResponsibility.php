@@ -12,7 +12,7 @@ class ServiceResponsibility extends Model
     protected $table = 'tbl_responsible_service';
 
     protected $fillable = [
-      'fl_centre_code', 'fl_service_code','fl_period_code'
+      'fl_centre_code', 'fl_service_code','fl_period_code','fl_company_id'
     ];
 
     public function service_name(): \Illuminate\Database\Eloquent\Relations\BelongsTo

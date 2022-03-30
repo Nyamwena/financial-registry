@@ -12,7 +12,8 @@ class Remittance extends Model
 
     protected  $primaryKey = 'fl_remittance_num';
 
-    protected $fillable = ['fl_consumer_account','fl_remittance_date','fl_payment_code','fl_currency_code','fl_remittance_amount'];
+    protected $fillable = ['fl_consumer_account','fl_remittance_date','fl_payment_code',
+        'fl_currency_code','fl_remittance_amount','fl_company_id'];
 
     public function invoice_details(): \Illuminate\Database\Eloquent\Relations\HasOne
     {

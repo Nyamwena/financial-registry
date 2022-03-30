@@ -21,6 +21,7 @@ return new class extends Migration
             $table->double('fl_quantity')->nullable();
             $table->decimal('fl_tax_amount', 13,4)->default(0);
             $table->double('fl_line_total')->default(0);
+            $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
 
             $table->foreign('fl_service_code')->references('fl_service_code')->on('tbl_service')->onDelete('cascade');

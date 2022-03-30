@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('fl_telephone', length: 100)->nullable();
             $table->string('fl_credit_plan', length: 50)->nullable();
             $table->boolean('fl_active')->default(1);
+           // $table->unsignedBigInteger('fl_company_id');
             $table->timestamps();
         });
     }
